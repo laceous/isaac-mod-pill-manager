@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+    <name>Pill Manager</name>
+    <directory>pill manager</directory>
+    <id>2873893297</id>
+    <description>This mod integrates with Mod Config Menu to provide a pill manager.
+
+[b][u]General[/u][/b]
+
+There's options to:
+[list]
+    [*]Identiy pills in-game before use
+    [*]Force pill effects into the pill pool
+[/list]
+
+Note: Pill effects will be randomly assigned to pill colors. Due to the random behavior, forcing more than one pill effect may overwrite any previous assignments. Pill effects added in this manner will have normal interactions with items like PHD.
+
+[b][u]Colors[/u][/b]
+
+You can set relative weights for how often each pill color will show up when spawning a random pill. Do you want all white-blue pills? Should all pills spawn as horse pills? Do you want gold pills to show up more often? Set all the weights back to 0 to fall back to the game's default behavior.
+
+[b][u]Effects 1[/u][/b]
+
+This option lets you override specific pill colors with static pill effects. Modded pill effects are also supported.
+
+Note: There's currently no integration with items like PHD for overriden pill effects. Items like PHD are applied on a per-player basis, but the API doesn't fully support this.
+
+[b][u]Effects 2[/u][/b]
+
+This option lets you override built-in pill effects with other pill effects. This allows you to blacklist any pill effects you don't like. Don't like Retro Vision? Change it to something else (e.g. I Found Pills).
+
+Note: The rules in Effects 1 take precedence over the rules in Effects 2.
+
+Note: Blacklisting modded pill effects isn't supported. The list of built-in pill effects is already pretty long at 50 (in Repentance). Plus, you can simply uninstall any mods you don't like.
+
+[b][u]Spawn[/u][/b]
+
+Spawn random/specific/horse pills directly from the menu.
+
+[b][u]Info[/u][/b]
+
+View the current pill pool.</description>
+    <version>1.1</version>
+    <visibility>Public</visibility>
+    <tag id="Lua"/>
+    <tag id="Pills"/>
+    <tag id="Tweaks"/>
+</metadata>
