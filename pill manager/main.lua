@@ -87,6 +87,7 @@ mod.pillEffectLabels = {
 
 mod.state = {}
 mod.state.identifyPills = false
+mod.state.shuffledAndHidden = false
 mod.state.pillColors = {
                          { color = PillColor.PILL_BLUE_BLUE,        effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
                          { color = PillColor.PILL_WHITE_BLUE,       effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
@@ -166,6 +167,9 @@ function mod:onGameStart(isContinue)
     if type(state) == 'table' then
       if type(state.identifyPills) == 'boolean' then
         mod.state.identifyPills = state.identifyPills
+      end
+      if type(state.shuffledAndHidden) == 'boolean' then
+        mod.state.shuffledAndHidden = state.shuffledAndHidden
       end
       if type(state.pillColors) == 'table' then
         for _, v in ipairs(state.pillColors) do
@@ -532,8 +536,10 @@ function mod:setupModConfigMenu()
         return 'Reset'
       end,
       OnChange = function(b)
-        for _, v in ipairs(mod.state.pillColors) do
-          v.effect = PillEffect.PILLEFFECT_NULL
+        if not mod.state.shuffledAndHidden then
+          for _, v in ipairs(mod.state.pillColors) do
+            v.effect = PillEffect.PILLEFFECT_NULL
+          end
         end
       end,
       Info = { 'Reset all effect overrides' }
@@ -551,11 +557,44 @@ function mod:setupModConfigMenu()
         return 'Randomize'
       end,
       OnChange = function(b)
-        for _, v in ipairs(mod.state.pillColors) do
-          v.effect = mod.rng:RandomInt(mod.pillEffectsMax + 1)
+        if not mod.state.shuffledAndHidden then
+          for _, v in ipairs(mod.state.pillColors) do
+            v.effect = mod.rng:RandomInt(mod.pillEffectsMax + 1)
+          end
         end
       end,
       Info = { 'Randomize all effect overrides' }
+    }
+  )
+  ModConfigMenu.AddSetting(
+    mod.Name,
+    'Effects 1',
+    {
+      Type = ModConfigMenu.OptionType.BOOLEAN,
+      CurrentSetting = function()
+        return mod.state.shuffledAndHidden
+      end,
+      Display = function()
+        return mod.state.shuffledAndHidden and 'Shuffled & Hidden' or 'Shuffle & Hide'
+      end,
+      OnChange = function(b)
+        mod.state.shuffledAndHidden = b
+        
+        if b then
+          local tbl = {}
+          for _, v in ipairs(mod.state.pillColors) do
+            if v.effect ~= PillEffect.PILLEFFECT_NULL then
+              table.insert(tbl, v.effect)
+            end
+          end
+          for _, v in ipairs(mod.state.pillColors) do
+            if v.effect ~= PillEffect.PILLEFFECT_NULL then
+              v.effect = table.remove(tbl, mod.rng:RandomInt(#tbl) + 1)
+            end
+          end
+        end
+      end,
+      Info = { 'Shuffle all overriden effects', '& hide the results' }
     }
   )
   for _, v in ipairs(mod.state.pillColors) do
@@ -572,10 +611,12 @@ function mod:setupModConfigMenu()
         Minimum = PillEffect.PILLEFFECT_NULL,
         Maximum = mod.pillEffectsMax,
         Display = function()
-          return mod:getPillEffectName(v.effect)
+          return mod.state.shuffledAndHidden and 'Hidden' or mod:getPillEffectName(v.effect)
         end,
         OnChange = function(n)
-          v.effect = n
+          if not mod.state.shuffledAndHidden then
+            v.effect = n
+          end
         end,
         Info = { 'Select a pill effect override' }
       }

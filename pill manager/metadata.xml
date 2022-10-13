@@ -23,6 +23,8 @@ You can set relative weights for how often each pill color will show up when spa
 
 This option lets you override specific pill colors with static pill effects. Modded pill effects are also supported.
 
+Shuffle &amp; Hide: This allows you to setup a custom pill pool and then shuffle the pill effects onto random pill colors. Only overridden pill effects will be shuffled. Results will be hidden by default.
+
 Note: There's currently no integration with items like PHD for overriden pill effects. Items like PHD are applied on a per-player basis, but the API doesn't fully support this.
 
 [b][u]Effects 2[/u][/b]
@@ -40,7 +42,7 @@ Spawn random/specific/horse pills directly from the menu.
 [b][u]Info[/u][/b]
 
 View the current pill pool.</description>
-    <version>1.1</version>
+    <version>1.2</version>
     <visibility>Public</visibility>
     <tag id="Lua"/>
     <tag id="Pills"/>
