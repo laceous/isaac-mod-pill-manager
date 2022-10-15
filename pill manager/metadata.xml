@@ -10,8 +10,11 @@
 There's options to:
 [list]
     [*]Identiy pills in-game before use
+    [*]Enable all or nothing item integration for overridden pill effects
     [*]Force pill effects into the pill pool
 [/list]
+
+Note: The game has per-player pill interactions with certain items (PHD, Lucky Foot, Virgo, False PHD, and low health). The API doesn't currently support per-player integration for overriden pill effects (Effects 1 and 2). Instead, there's an all or nothing toggle that can check if ANY players have an item like PHD. This should work fine for single player, but will behave in a non-standard way for multiplayer. Low health will only be checked in single player scenarios. Due to how the game works, Jacob &amp; Esau is considered a multiplayer scenario.
 
 Note: Pill effects will be randomly assigned to pill colors. Due to the random behavior, forcing more than one pill effect may overwrite any previous assignments. Pill effects added in this manner will have normal interactions with items like PHD.
 
@@ -24,8 +27,6 @@ You can set relative weights for how often each pill color will show up when spa
 This option lets you override specific pill colors with static pill effects. Modded pill effects are also supported.
 
 Shuffle &amp; Hide: This allows you to setup a custom pill pool and then shuffle the pill effects onto random pill colors. Only overridden pill effects will be shuffled. Results will be hidden by default.
-
-Note: There's currently no integration with items like PHD for overriden pill effects. Items like PHD are applied on a per-player basis, but the API doesn't fully support this.
 
 [b][u]Effects 2[/u][/b]
 
@@ -42,7 +43,7 @@ Spawn random/specific/horse pills directly from the menu.
 [b][u]Info[/u][/b]
 
 View the current pill pool.</description>
-    <version>1.2</version>
+    <version>1.3</version>
     <visibility>Public</visibility>
     <tag id="Lua"/>
     <tag id="Pills"/>

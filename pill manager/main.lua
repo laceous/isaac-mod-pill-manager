@@ -85,8 +85,62 @@ mod.pillEffectLabels = {
                          ['#EXPERIMENTAL_PILL_NAME'] = 'Experimental Pill'                                     -- 49
                        }
 
+-- phd / lucky foot / virgo
+mod.badToGoodPillEffects = {
+                             [PillEffect.PILLEFFECT_HEALTH_DOWN]     = PillEffect.PILLEFFECT_HEALTH_UP,
+                             [PillEffect.PILLEFFECT_RANGE_DOWN]      = PillEffect.PILLEFFECT_RANGE_UP,
+                             [PillEffect.PILLEFFECT_SPEED_DOWN]      = PillEffect.PILLEFFECT_SPEED_UP,
+                             [PillEffect.PILLEFFECT_TEARS_DOWN]      = PillEffect.PILLEFFECT_TEARS_UP,
+                             [PillEffect.PILLEFFECT_LUCK_DOWN]       = PillEffect.PILLEFFECT_LUCK_UP,
+                             [PillEffect.PILLEFFECT_SHOT_SPEED_DOWN] = PillEffect.PILLEFFECT_SHOT_SPEED_UP,
+                             [PillEffect.PILLEFFECT_AMNESIA]         = PillEffect.PILLEFFECT_SEE_FOREVER,
+                             [PillEffect.PILLEFFECT_QUESTIONMARK]    = PillEffect.PILLEFFECT_TELEPILLS,
+                             [PillEffect.PILLEFFECT_ADDICTED]        = PillEffect.PILLEFFECT_PERCS,
+                             [PillEffect.PILLEFFECT_IM_EXCITED]      = PillEffect.PILLEFFECT_IM_DROWSY,
+                             [PillEffect.PILLEFFECT_PARALYSIS]       = PillEffect.PILLEFFECT_PHEROMONES,
+                             [PillEffect.PILLEFFECT_RETRO_VISION]    = PillEffect.PILLEFFECT_SEE_FOREVER,
+                             [PillEffect.PILLEFFECT_WIZARD]          = PillEffect.PILLEFFECT_POWER,
+                             [PillEffect.PILLEFFECT_X_LAX]           = PillEffect.PILLEFFECT_SOMETHINGS_WRONG,
+                             [PillEffect.PILLEFFECT_BAD_TRIP]        = PillEffect.PILLEFFECT_BALLS_OF_STEEL
+                           }
+
+-- false phd
+mod.goodToBadPillEffects = {
+                             [PillEffect.PILLEFFECT_HEALTH_UP]            = PillEffect.PILLEFFECT_HEALTH_DOWN,
+                             [PillEffect.PILLEFFECT_RANGE_UP]             = PillEffect.PILLEFFECT_RANGE_DOWN,
+                             [PillEffect.PILLEFFECT_SPEED_UP]             = PillEffect.PILLEFFECT_SPEED_DOWN,
+                             [PillEffect.PILLEFFECT_TEARS_UP]             = PillEffect.PILLEFFECT_TEARS_DOWN,
+                             [PillEffect.PILLEFFECT_LUCK_UP]              = PillEffect.PILLEFFECT_LUCK_DOWN,
+                             [PillEffect.PILLEFFECT_SHOT_SPEED_UP]        = PillEffect.PILLEFFECT_SHOT_SPEED_DOWN,
+                             [PillEffect.PILLEFFECT_BAD_GAS]              = PillEffect.PILLEFFECT_HEALTH_DOWN,
+                             [PillEffect.PILLEFFECT_FRIENDS_TILL_THE_END] = PillEffect.PILLEFFECT_HEALTH_DOWN,
+                             [PillEffect.PILLEFFECT_SEE_FOREVER]          = PillEffect.PILLEFFECT_AMNESIA,
+                             [PillEffect.PILLEFFECT_LEMON_PARTY]          = PillEffect.PILLEFFECT_AMNESIA,
+                             [PillEffect.PILLEFFECT_EXPLOSIVE_DIARRHEA]   = PillEffect.PILLEFFECT_RANGE_DOWN,
+                             [PillEffect.PILLEFFECT_LARGER]               = PillEffect.PILLEFFECT_RANGE_DOWN,
+                             [PillEffect.PILLEFFECT_BOMBS_ARE_KEYS]       = PillEffect.PILLEFFECT_TEARS_DOWN,
+                             [PillEffect.PILLEFFECT_INFESTED_EXCLAMATION] = PillEffect.PILLEFFECT_TEARS_DOWN,
+                             [PillEffect.PILLEFFECT_48HOUR_ENERGY]        = PillEffect.PILLEFFECT_SPEED_DOWN,
+                             [PillEffect.PILLEFFECT_SMALLER]              = PillEffect.PILLEFFECT_SPEED_DOWN,
+                             [PillEffect.PILLEFFECT_PRETTY_FLY]           = PillEffect.PILLEFFECT_LUCK_DOWN,
+                             [PillEffect.PILLEFFECT_INFESTED_QUESTION]    = PillEffect.PILLEFFECT_LUCK_DOWN,
+                             [PillEffect.PILLEFFECT_BALLS_OF_STEEL]       = PillEffect.PILLEFFECT_BAD_TRIP,
+                             [PillEffect.PILLEFFECT_FULL_HEALTH]          = PillEffect.PILLEFFECT_BAD_TRIP,
+                             [PillEffect.PILLEFFECT_HEMATEMESIS]          = PillEffect.PILLEFFECT_BAD_TRIP,
+                             [PillEffect.PILLEFFECT_PHEROMONES]           = PillEffect.PILLEFFECT_PARALYSIS,
+                             [PillEffect.PILLEFFECT_TELEPILLS]            = PillEffect.PILLEFFECT_QUESTIONMARK,
+                             [PillEffect.PILLEFFECT_IM_DROWSY]            = PillEffect.PILLEFFECT_IM_EXCITED,
+                             [PillEffect.PILLEFFECT_PERCS]                = PillEffect.PILLEFFECT_ADDICTED,
+                             [PillEffect.PILLEFFECT_SUNSHINE]             = PillEffect.PILLEFFECT_RETRO_VISION,
+                             [PillEffect.PILLEFFECT_POWER]                = PillEffect.PILLEFFECT_WIZARD,
+                             [PillEffect.PILLEFFECT_SOMETHINGS_WRONG]     = PillEffect.PILLEFFECT_X_LAX,
+                             [PillEffect.PILLEFFECT_GULP]                 = PillEffect.PILLEFFECT_HORF,
+                             [PillEffect.PILLEFFECT_VURP]                 = PillEffect.PILLEFFECT_HORF
+                           }
+
 mod.state = {}
 mod.state.identifyPills = false
+mod.state.enableItemIntegration = false
 mod.state.shuffledAndHidden = false
 mod.state.pillColors = {
                          { color = PillColor.PILL_BLUE_BLUE,        effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
@@ -167,6 +221,9 @@ function mod:onGameStart(isContinue)
     if type(state) == 'table' then
       if type(state.identifyPills) == 'boolean' then
         mod.state.identifyPills = state.identifyPills
+      end
+      if type(state.enableItemIntegration) == 'boolean' then
+        mod.state.enableItemIntegration = state.enableItemIntegration
       end
       if type(state.shuffledAndHidden) == 'boolean' then
         mod.state.shuffledAndHidden = state.shuffledAndHidden
@@ -254,14 +311,23 @@ function mod:getPillColor(seed)
   return nil
 end
 
+-- pillColor never includes PILL_GIANT_FLAG so you can't tell if it's a horse pill
 function mod:getPillEffect(pillEffect, pillColor)
   local colorOverride = mod:getPillColorOverride(pillColor)
   if colorOverride ~= PillEffect.PILLEFFECT_NULL then
+    if mod.state.enableItemIntegration then
+      colorOverride = mod:doItemIntegration(colorOverride)
+    end
+    
     return colorOverride
   end
   
   local effectOverride = mod:getPillEffectOverride(pillEffect)
   if effectOverride ~= PillEffect.PILLEFFECT_NULL then
+    if mod.state.enableItemIntegration then
+      effectOverride = mod:doItemIntegration(effectOverride)
+    end
+    
     return effectOverride
   end
   
@@ -341,6 +407,93 @@ function mod:getPillEffectOverride(effect)
   return PillEffect.PILLEFFECT_NULL
 end
 
+function mod:doItemIntegration(effect)
+  local hasPHD = mod:hasCollectible(CollectibleType.COLLECTIBLE_PHD)
+  local hasLuckyFoot = mod:hasCollectible(CollectibleType.COLLECTIBLE_LUCKY_FOOT)
+  local hasVirgo = mod:hasCollectible(CollectibleType.COLLECTIBLE_VIRGO)
+  local hasFalsePHD = mod:hasCollectible(CollectibleType.COLLECTIBLE_FALSE_PHD)
+  
+  local tempEffect = nil
+  
+  -- this excludes multiplayer (including jacob & esau)
+  local player = mod:getSinglePlayer()
+  if player and (effect == PillEffect.PILLEFFECT_BAD_TRIP or effect == PillEffect.PILLEFFECT_HEALTH_DOWN) then
+    local playerType = player:GetPlayerType()
+    local maxHearts = player:GetMaxHearts() / 2
+    local hearts = (player:GetHearts() / 2) + (player:GetSoulHearts() / 2) + player:GetBoneHearts()
+    
+    if playerType == PlayerType.PLAYER_BLUEBABY or playerType == PlayerType.PLAYER_BLUEBABY_B or
+       playerType == PlayerType.PLAYER_THESOUL or playerType == PlayerType.PLAYER_THESOUL_B
+    then
+      maxHearts = player:GetSoulHearts() / 2
+    end
+    
+    if effect == PillEffect.PILLEFFECT_BAD_TRIP and hearts <= 1 then
+      tempEffect = (hasFalsePHD and not (hasPHD or hasLuckyFoot or hasVirgo)) and PillEffect.PILLEFFECT_I_FOUND_PILLS or PillEffect.PILLEFFECT_FULL_HEALTH
+    elseif effect == PillEffect.PILLEFFECT_HEALTH_DOWN and maxHearts <= 1 then
+      tempEffect = (hasFalsePHD and not (hasPHD or hasLuckyFoot or hasVirgo)) and PillEffect.PILLEFFECT_I_FOUND_PILLS or PillEffect.PILLEFFECT_HEALTH_UP
+    end
+  end
+  
+  if tempEffect == nil then
+    if hasFalsePHD then
+      if not (hasPHD or hasLuckyFoot or hasVirgo) then
+        tempEffect = mod.goodToBadPillEffects[effect]
+      end
+    elseif hasPHD or hasLuckyFoot or hasVirgo then
+      tempEffect = mod.badToGoodPillEffects[effect]
+    end
+  end
+  
+  if tempEffect ~= nil then
+    effect = tempEffect
+  end
+  
+  return effect
+end
+
+-- exclude babies, deal with tainted forgotten/soul
+function mod:getSinglePlayer()
+  local players = {}
+  for i = 0, game:GetNumPlayers() - 1 do
+    local player = game:GetPlayer(i)
+    if player:GetBabySkin() == BabySubType.BABY_UNASSIGNED then
+      table.insert(players, player)
+    end
+  end
+  
+  local playersCount = #players
+  if playersCount == 1 then
+    return players[1]
+  elseif playersCount == 2 and mod:isTaintedForgotten(players[1]) then
+    return players[1]:GetOtherTwin()
+  end
+  
+  return nil
+end
+
+function mod:isTaintedForgotten(player)
+  if player:GetPlayerType() == PlayerType.PLAYER_THEFORGOTTEN_B then
+    local twin = player:GetOtherTwin()
+    if twin and twin:GetPlayerType() == PlayerType.PLAYER_THESOUL_B then
+      return true
+    end
+  end
+  
+  return false
+end
+
+function mod:hasCollectible(collectible)
+  for i = 0, game:GetNumPlayers() - 1 do
+    local player = game:GetPlayer(i)
+    if player:HasCollectible(collectible, false) then
+      return true
+    end
+  end
+  
+  return false
+end
+
 function mod:identifyPills()
   local itemPool = game:GetItemPool()
   for color, _ in pairs(mod.pillColors) do
@@ -390,6 +543,23 @@ function mod:setupModConfigMenu()
         end
       end,
       Info = { 'Note: you can\'t de-identify pills', 'during the current run' }
+    }
+  )
+  ModConfigMenu.AddSetting(
+    mod.Name,
+    'General',
+    {
+      Type = ModConfigMenu.OptionType.BOOLEAN,
+      CurrentSetting = function()
+        return mod.state.enableItemIntegration
+      end,
+      Display = function()
+        return (mod.state.enableItemIntegration and 'Enable' or 'Disable') .. ' item integration'
+      end,
+      OnChange = function(b)
+        mod.state.enableItemIntegration = b
+      end,
+      Info = { 'Items: phd, lucky foot, virgo, false phd', '+Low health for single player', 'This is all or nothing for overriden effects' }
     }
   )
   ModConfigMenu.AddSpace(mod.Name, 'General')
