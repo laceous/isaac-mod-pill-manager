@@ -408,65 +408,67 @@ function mod:getPillEffectOverride(effect)
 end
 
 function mod:doItemIntegration(effect)
-  local hasPHD = mod:hasCollectible(CollectibleType.COLLECTIBLE_PHD)
-  local hasLuckyFoot = mod:hasCollectible(CollectibleType.COLLECTIBLE_LUCKY_FOOT)
-  local hasVirgo = mod:hasCollectible(CollectibleType.COLLECTIBLE_VIRGO)
-  local hasFalsePHD = mod:hasCollectible(CollectibleType.COLLECTIBLE_FALSE_PHD)
-  
-  local tempEffect = nil
-  
   -- this excludes multiplayer (including jacob & esau)
   local player = mod:getSinglePlayer()
-  if player and (effect == PillEffect.PILLEFFECT_BAD_TRIP or effect == PillEffect.PILLEFFECT_HEALTH_DOWN) then
-    local playerType = player:GetPlayerType()
-    local maxHearts = player:GetMaxHearts() / 2
-    local hearts = (player:GetHearts() / 2) + (player:GetSoulHearts() / 2) + player:GetBoneHearts()
-    
-    if playerType == PlayerType.PLAYER_BLUEBABY or playerType == PlayerType.PLAYER_BLUEBABY_B or
-       playerType == PlayerType.PLAYER_THESOUL or playerType == PlayerType.PLAYER_THESOUL_B
-    then
-      maxHearts = player:GetSoulHearts() / 2
-    end
-    
-    if effect == PillEffect.PILLEFFECT_BAD_TRIP and hearts <= 1 then
-      tempEffect = (hasFalsePHD and not (hasPHD or hasLuckyFoot or hasVirgo)) and PillEffect.PILLEFFECT_I_FOUND_PILLS or PillEffect.PILLEFFECT_FULL_HEALTH
-    elseif effect == PillEffect.PILLEFFECT_HEALTH_DOWN and maxHearts <= 1 then
-      tempEffect = (hasFalsePHD and not (hasPHD or hasLuckyFoot or hasVirgo)) and PillEffect.PILLEFFECT_I_FOUND_PILLS or PillEffect.PILLEFFECT_HEALTH_UP
-    end
-  end
   
-  if tempEffect == nil then
-    if hasFalsePHD then
-      if not (hasPHD or hasLuckyFoot or hasVirgo) then
-        tempEffect = mod.goodToBadPillEffects[effect]
+  if player then
+    local tempEffect = nil
+    
+    local hasPHD = player:HasCollectible(CollectibleType.COLLECTIBLE_PHD, false)
+    local hasLuckyFoot = player:HasCollectible(CollectibleType.COLLECTIBLE_LUCKY_FOOT, false)
+    local hasVirgo = player:HasCollectible(CollectibleType.COLLECTIBLE_VIRGO, false)
+    local hasFalsePHD = player:HasCollectible(CollectibleType.COLLECTIBLE_FALSE_PHD, false)
+    
+    if effect == PillEffect.PILLEFFECT_BAD_TRIP or effect == PillEffect.PILLEFFECT_HEALTH_DOWN then
+      local playerType = player:GetPlayerType()
+      local maxHearts = player:GetMaxHearts() / 2
+      local hearts = (player:GetHearts() / 2) + (player:GetSoulHearts() / 2) + player:GetBoneHearts()
+      
+      if playerType == PlayerType.PLAYER_BLUEBABY or playerType == PlayerType.PLAYER_BLUEBABY_B or
+         playerType == PlayerType.PLAYER_THESOUL or playerType == PlayerType.PLAYER_THEFORGOTTEN_B
+      then
+        maxHearts = player:GetSoulHearts() / 2
       end
-    elseif hasPHD or hasLuckyFoot or hasVirgo then
-      tempEffect = mod.badToGoodPillEffects[effect]
+      
+      if effect == PillEffect.PILLEFFECT_BAD_TRIP and hearts <= 1 then
+        tempEffect = (hasFalsePHD and not (hasPHD or hasLuckyFoot or hasVirgo)) and PillEffect.PILLEFFECT_I_FOUND_PILLS or PillEffect.PILLEFFECT_FULL_HEALTH
+      elseif effect == PillEffect.PILLEFFECT_HEALTH_DOWN and maxHearts <= 1 then
+        tempEffect = (hasFalsePHD and not (hasPHD or hasLuckyFoot or hasVirgo)) and PillEffect.PILLEFFECT_I_FOUND_PILLS or PillEffect.PILLEFFECT_HEALTH_UP
+      end
     end
-  end
-  
-  if tempEffect ~= nil then
-    effect = tempEffect
+    
+    if tempEffect == nil then
+      if hasFalsePHD then
+        if not (hasPHD or hasLuckyFoot or hasVirgo) then
+          tempEffect = mod.goodToBadPillEffects[effect]
+        end
+      elseif hasPHD or hasLuckyFoot or hasVirgo then
+        tempEffect = mod.badToGoodPillEffects[effect]
+      end
+    end
+    
+    if tempEffect then
+      effect = tempEffect
+    end
   end
   
   return effect
 end
 
--- exclude babies, deal with tainted forgotten/soul
+-- exclude babies, co-op ghosts, children (strawman, book of illusions, etc)
+-- deal with tainted forgotten/soul
 function mod:getSinglePlayer()
   local players = {}
   for i = 0, game:GetNumPlayers() - 1 do
     local player = game:GetPlayer(i)
-    if player:GetBabySkin() == BabySubType.BABY_UNASSIGNED then
+    if player:GetBabySkin() == BabySubType.BABY_UNASSIGNED and not player:IsCoopGhost() and player.Parent == nil then
       table.insert(players, player)
     end
   end
   
   local playersCount = #players
-  if playersCount == 1 then
-    return players[1]
-  elseif playersCount == 2 and mod:isTaintedForgotten(players[1]) then
-    return players[1]:GetOtherTwin()
+  if playersCount == 1 or (playersCount == 2 and mod:isTaintedForgotten(players[1])) then
+    return players[1] -- tainted forgotten (rather than soul)
   end
   
   return nil
@@ -476,17 +478,6 @@ function mod:isTaintedForgotten(player)
   if player:GetPlayerType() == PlayerType.PLAYER_THEFORGOTTEN_B then
     local twin = player:GetOtherTwin()
     if twin and twin:GetPlayerType() == PlayerType.PLAYER_THESOUL_B then
-      return true
-    end
-  end
-  
-  return false
-end
-
-function mod:hasCollectible(collectible)
-  for i = 0, game:GetNumPlayers() - 1 do
-    local player = game:GetPlayer(i)
-    if player:HasCollectible(collectible, false) then
       return true
     end
   end
@@ -559,7 +550,7 @@ function mod:setupModConfigMenu()
       OnChange = function(b)
         mod.state.enableItemIntegration = b
       end,
-      Info = { 'Items: phd, lucky foot, virgo, false phd', '+Low health for single player', 'This is all or nothing for overriden effects' }
+      Info = { 'Single player only', 'Items: phd, lucky foot, virgo, false phd', '(+low health)' }
     }
   )
   ModConfigMenu.AddSpace(mod.Name, 'General')
@@ -596,7 +587,7 @@ function mod:setupModConfigMenu()
       end,
       OnChange = function(b)
         local itemPool = game:GetItemPool()
-        mod.forcedPillPoolColor = itemPool:ForceAddPillEffect(mod.pillEffectToAddToPool)
+        mod.forcedPillPoolColor = itemPool:ForceAddPillEffect(mod.pillEffectToAddToPool) -- Isaac.AddPillEffectToPool
         mod.forcedPillPoolTime = game:GetFrameCount()
       end,
       Info = { 'Force a pill effect into the pool' }
