@@ -5,18 +5,34 @@
     <id>2873893297</id>
     <description>This mod integrates with Mod Config Menu to provide a pill manager.
 
+There's two ways to set pill effects:
+[list]
+    [*]Force pill effects into the pill pool (General and Startup). Effects will be applied randomly. Items like PHD will have full support in single and multi-player.
+    [*]Override pill effects (Effects 1 and 2). Effects can be applied more specifically. Items like PHD can be emulated in single player only.
+[/list]
+
+Modded pill effects are supported.
+
 [b][u]General[/u][/b]
 
 There's options to:
 [list]
     [*]Identiy pills in-game before use
     [*]Enable single player item integration for overridden pill effects
-    [*]Force pill effects into the pill pool
+    [*]Force individual pill effects into the pill pool
 [/list]
 
 Note: The game has per-player pill interactions with certain items (PHD, Lucky Foot, Virgo, False PHD, and low health). The API doesn't fully support per-player integration for overriden pill effects (Effects 1 and 2). As a workaround, this integration has been made available (via a toggle) for single player only. Due to how the game works, Jacob &amp; Esau are considered multiplayer.
 
 Note: Pill effects will be randomly assigned to pill colors. Due to the random behavior, forcing more than one pill effect may overwrite any previous assignments. Pill effects added in this manner will have normal interactions with items like PHD.
+
+[b][u]Startup[/u][/b]
+
+Here, you can setup multiple pill effects to force into the pill pool when your run starts. There's also an option to apply any updates mid-run.
+
+Note: This is using the same method as the individual option (General), but makes sure that all options (up to 13) are applied successfully without overwriting each other.
+
+Note: Each pill effect will only be applied once. Multiples will be ignored.
 
 [b][u]Colors[/u][/b]
 
@@ -24,7 +40,7 @@ You can set relative weights for how often each pill color will show up when spa
 
 [b][u]Effects 1[/u][/b]
 
-This option lets you override specific pill colors with static pill effects. Modded pill effects are also supported.
+This option lets you override specific pill colors with static pill effects.
 
 Shuffle &amp; Hide: This allows you to setup a custom pill pool and then shuffle the pill effects onto random pill colors. Only overridden pill effects will be shuffled. Results will be hidden by default.
 
@@ -42,8 +58,8 @@ Spawn random/specific/horse pills directly from the menu.
 
 [b][u]Info[/u][/b]
 
-View the current pill pool.</description>
-    <version>1.4</version>
+View the current pill pool (including any overrides).</description>
+    <version>1.5</version>
     <visibility>Public</visibility>
     <tag id="Lua"/>
     <tag id="Pills"/>

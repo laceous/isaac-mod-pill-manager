@@ -142,6 +142,21 @@ mod.state = {}
 mod.state.identifyPills = false
 mod.state.enableItemIntegration = false
 mod.state.shuffledAndHidden = false
+mod.state.startupEffects = {
+                             { effect = PillEffect.PILLEFFECT_NULL },
+                             { effect = PillEffect.PILLEFFECT_NULL },
+                             { effect = PillEffect.PILLEFFECT_NULL },
+                             { effect = PillEffect.PILLEFFECT_NULL },
+                             { effect = PillEffect.PILLEFFECT_NULL },
+                             { effect = PillEffect.PILLEFFECT_NULL },
+                             { effect = PillEffect.PILLEFFECT_NULL },
+                             { effect = PillEffect.PILLEFFECT_NULL },
+                             { effect = PillEffect.PILLEFFECT_NULL },
+                             { effect = PillEffect.PILLEFFECT_NULL },
+                             { effect = PillEffect.PILLEFFECT_NULL },
+                             { effect = PillEffect.PILLEFFECT_NULL },
+                             { effect = PillEffect.PILLEFFECT_NULL }
+                           }
 mod.state.pillColors = {
                          { color = PillColor.PILL_BLUE_BLUE,        effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
                          { color = PillColor.PILL_WHITE_BLUE,       effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
@@ -228,6 +243,13 @@ function mod:onGameStart(isContinue)
       if type(state.shuffledAndHidden) == 'boolean' then
         mod.state.shuffledAndHidden = state.shuffledAndHidden
       end
+      if type(state.startupEffects) == 'table' then
+        for i, v in ipairs(state.startupEffects) do
+          if i >= 1 and i <= #mod.state.startupEffects and math.type(v.effect) == 'integer' and v.effect >= PillEffect.PILLEFFECT_NULL and v.effect <= mod.pillEffectsMax then
+            mod.state.startupEffects[i].effect = v.effect
+          end
+        end
+      end
       if type(state.pillColors) == 'table' then
         for _, v in ipairs(state.pillColors) do
           if math.type(v.color) == 'integer' and v.color >= PillColor.PILL_BLUE_BLUE and v.color <= PillColor.PILL_GOLD then
@@ -265,6 +287,11 @@ function mod:onGameStart(isContinue)
     end
   end
   
+  for _, v in ipairs(mod.state.startupEffects) do
+    if v.effect < PillEffect.PILLEFFECT_NULL or v.effect > mod.pillEffectsMax then
+      v.effect = PillEffect.PILLEFFECT_NULL
+    end
+  end
   for _, v in ipairs(mod.state.pillColors) do
     if v.effect < PillEffect.PILLEFFECT_NULL or v.effect > mod.pillEffectsMax then
       v.effect = PillEffect.PILLEFFECT_NULL
@@ -276,8 +303,12 @@ function mod:onGameStart(isContinue)
     end
   end
   
-  if not isContinue and mod.state.identifyPills then
-    mod:identifyPills()
+  if not isContinue then
+    mod:setStartupEffects()
+    
+    if mod.state.identifyPills then
+      mod:identifyPills()
+    end
   end
 end
 
@@ -485,6 +516,30 @@ function mod:isTaintedForgotten(player)
   return false
 end
 
+function mod:setStartupEffects()
+  local startupEffects = {}
+  for _, v in ipairs(mod.state.startupEffects) do
+    if v.effect ~= PillEffect.PILLEFFECT_NULL and not mod:tableHasValue(startupEffects, v.effect) then
+      table.insert(startupEffects, v.effect)
+    end
+  end
+  
+  local itemPool = game:GetItemPool()
+  repeat
+    local done = true
+    local startupColors = {}
+    for _, v in ipairs(startupEffects) do
+      local color = itemPool:ForceAddPillEffect(v)
+      
+      if mod:tableHasValue(startupColors, color) then
+        done = false
+      else
+        table.insert(startupColors, color)
+      end
+    end
+  until(done)
+end
+
 function mod:identifyPills()
   local itemPool = game:GetItemPool()
   for color, _ in pairs(mod.pillColors) do
@@ -496,6 +551,16 @@ function mod:spawnPill(color, isHorse)
   local player = game:GetPlayer(0)
   local pill = (color ~= PillColor.PILL_NULL and isHorse) and PillColor.PILL_GIANT_FLAG + color or color
   Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_PILL, pill, Isaac.GetFreeNearPosition(player.Position, 3), Vector(0,0), nil)
+end
+
+function mod:tableHasValue(tbl, val)
+  for _, v in ipairs(tbl) do
+    if v == val then
+      return true
+    end
+  end
+  
+  return false
 end
 
 function mod:seedRng()
@@ -513,7 +578,7 @@ function mod:setupModConfigMenu()
     return
   end
   
-  for _, v in ipairs({ 'General', 'Colors', 'Effects 1', 'Effects 2', 'Spawn', 'Info' }) do
+  for _, v in ipairs({ 'General', 'Startup', 'Colors', 'Effects 1', 'Effects 2', 'Spawn', 'Info' }) do
     ModConfigMenu.RemoveSubcategory(mod.Name, v)
   end
   ModConfigMenu.AddSetting(
@@ -550,7 +615,7 @@ function mod:setupModConfigMenu()
       OnChange = function(b)
         mod.state.enableItemIntegration = b
       end,
-      Info = { 'Single player only', 'Items: phd, lucky foot, virgo, false phd', '(+low health)' }
+      Info = { 'Single player only / For overriden effects', 'Items: phd, lucky foot, virgo, false phd', '(+low health)' }
     }
   )
   ModConfigMenu.AddSpace(mod.Name, 'General')
@@ -607,6 +672,84 @@ function mod:setupModConfigMenu()
     
     return forcedPillPoolText
   end)
+  ModConfigMenu.AddSetting(
+    mod.Name,
+    'Startup',
+    {
+      Type = ModConfigMenu.OptionType.BOOLEAN,
+      CurrentSetting = function()
+        return false
+      end,
+      Display = function()
+        return 'Reset'
+      end,
+      OnChange = function(b)
+        for _, v in ipairs(mod.state.startupEffects) do
+          v.effect = PillEffect.PILLEFFECT_NULL
+        end
+      end,
+      Info = { 'Reset all startup effects' }
+    }
+  )
+  ModConfigMenu.AddSetting(
+    mod.Name,
+    'Startup',
+    {
+      Type = ModConfigMenu.OptionType.BOOLEAN,
+      CurrentSetting = function()
+        return false
+      end,
+      Display = function()
+        return 'Randomize'
+      end,
+      OnChange = function(b)
+        for _, v in ipairs(mod.state.startupEffects) do
+          v.effect = mod.rng:RandomInt(mod.pillEffectsMax + 1)
+        end
+      end,
+      Info = { 'Randomize all startup effects' }
+    }
+  )
+  ModConfigMenu.AddSpace(mod.Name, 'Startup')
+  for _, v in ipairs(mod.state.startupEffects) do
+    ModConfigMenu.AddSetting(
+      mod.Name,
+      'Startup',
+      {
+        Type = ModConfigMenu.OptionType.NUMBER,
+        CurrentSetting = function()
+          return v.effect
+        end,
+        Minimum = PillEffect.PILLEFFECT_NULL,
+        Maximum = mod.pillEffectsMax,
+        Display = function()
+          return '< ' .. ((v.effect ~= PillEffect.PILLEFFECT_NULL) and mod:getPillEffectName(v.effect) or 'None') .. ' >'
+        end,
+        OnChange = function(n)
+          v.effect = n
+        end,
+        Info = { 'Select a startup pill effect' }
+      }
+    )
+  end
+  ModConfigMenu.AddSpace(mod.Name, 'Startup')
+  ModConfigMenu.AddSetting(
+    mod.Name,
+    'Startup',
+    {
+      Type = ModConfigMenu.OptionType.BOOLEAN,
+      CurrentSetting = function()
+        return false
+      end,
+      Display = function()
+        return 'Apply to pool!'
+      end,
+      OnChange = function(b)
+        mod:setStartupEffects()
+      end,
+      Info = { 'Force the pill effects above into the pool' }
+    }
+  )
   ModConfigMenu.AddSetting(
     mod.Name,
     'Colors',
