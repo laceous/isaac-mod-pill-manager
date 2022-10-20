@@ -5,11 +5,15 @@
     <id>2873893297</id>
     <description>This mod integrates with Mod Config Menu to provide a pill manager.
 
+AB+ and Repentance are both supported.
+
 There's two ways to set pill effects:
 [list]
     [*]Force pill effects into the pill pool (General and Startup). Effects will be applied randomly. Items like PHD will have full support in single and multi-player.
     [*]Override pill effects (Effects 1 and 2). Effects can be applied more specifically. Items like PHD can be emulated in single player only.
 [/list]
+
+Single player checks will exclude co-op babies and co-op ghosts. This includes Repentance co-op and the True Co-op mod for AB+. Due to how the game works, Jacob &amp; Esau are considered multiplayer.
 
 Modded pill effects are supported.
 
@@ -22,7 +26,7 @@ There's options to:
     [*]Force individual pill effects into the pill pool
 [/list]
 
-Note: The game has per-player pill interactions with certain items (PHD, Lucky Foot, Virgo, False PHD, and low health). The API doesn't fully support per-player integration for overriden pill effects (Effects 1 and 2). As a workaround, this integration has been made available (via a toggle) for single player only. Due to how the game works, Jacob &amp; Esau are considered multiplayer.
+Note: The game has per-player pill interactions with certain items (PHD, Lucky Foot, Virgo, False PHD, and low health). The API doesn't fully support per-player integration for overriden pill effects (Effects 1 and 2). As a workaround, this integration has been made available (via a toggle) for single player only.
 
 Note: Pill effects will be randomly assigned to pill colors. Due to the random behavior, forcing more than one pill effect may overwrite any previous assignments. Pill effects added in this manner will have normal interactions with items like PHD.
 
@@ -50,7 +54,7 @@ This option lets you override built-in pill effects with other pill effects. Thi
 
 Note: The rules in Effects 1 take precedence over the rules in Effects 2.
 
-Note: Blacklisting modded pill effects isn't supported. The list of built-in pill effects is already pretty long at 50 (in Repentance). Plus, you can simply uninstall any mods you don't like.
+Note: Blacklisting modded pill effects isn't currently supported. The list of built-in pill effects is already pretty long at 50 (in Repentance). Plus, you can simply uninstall any mods you don't like.
 
 [b][u]Spawn[/u][/b]
 
@@ -59,7 +63,7 @@ Spawn random/specific/horse pills directly from the menu.
 [b][u]Info[/u][/b]
 
 View the current pill pool (including any overrides).</description>
-    <version>1.5</version>
+    <version>1.6</version>
     <visibility>Public</visibility>
     <tag id="Lua"/>
     <tag id="Pills"/>

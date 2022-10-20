@@ -10,21 +10,23 @@ mod.rng = RNG()
 
 -- there's no standard api for adding pill colors
 mod.pillColors = {
-                   [PillColor.PILL_BLUE_BLUE] = 'Blue-Blue',           -- 1
-                   [PillColor.PILL_WHITE_BLUE] = 'White-Blue',         -- 2
-                   [PillColor.PILL_ORANGE_ORANGE] = 'Orange-Orange',   -- 3
-                   [PillColor.PILL_WHITE_WHITE] = 'White-White',       -- 4
-                   [PillColor.PILL_REDDOTS_RED] = 'Dots-Red',          -- 5
-                   [PillColor.PILL_PINK_RED] = 'Pink-Red',             -- 6
-                   [PillColor.PILL_BLUE_CADETBLUE] = 'Blue-Cadetblue', -- 7
-                   [PillColor.PILL_YELLOW_ORANGE] = 'Yellow-Orange',   -- 8
-                   [PillColor.PILL_ORANGEDOTS_WHITE] = 'Dots-White',   -- 9
-                   [PillColor.PILL_WHITE_AZURE] = 'White-Azure',       -- 10
-                   [PillColor.PILL_BLACK_YELLOW] = 'Black-Yellow',     -- 11
-                   [PillColor.PILL_WHITE_BLACK] = 'White-Black',       -- 12
-                   [PillColor.PILL_WHITE_YELLOW] = 'White-Yellow',     -- 13
-                   [PillColor.PILL_GOLD] = 'Gold-Gold'                 -- 14
+                   [PillColor.PILL_BLUE_BLUE]        = 'Blue-Blue',      -- 1
+                   [PillColor.PILL_WHITE_BLUE]       = 'White-Blue',     -- 2
+                   [PillColor.PILL_ORANGE_ORANGE]    = 'Orange-Orange',  -- 3
+                   [PillColor.PILL_WHITE_WHITE]      = 'White-White',    -- 4
+                   [PillColor.PILL_REDDOTS_RED]      = 'Dots-Red',       -- 5
+                   [PillColor.PILL_PINK_RED]         = 'Pink-Red',       -- 6
+                   [PillColor.PILL_BLUE_CADETBLUE]   = 'Blue-Cadetblue', -- 7
+                   [PillColor.PILL_YELLOW_ORANGE]    = 'Yellow-Orange',  -- 8
+                   [PillColor.PILL_ORANGEDOTS_WHITE] = 'Dots-White',     -- 9
+                   [PillColor.PILL_WHITE_AZURE]      = 'White-Azure',    -- 10
+                   [PillColor.PILL_BLACK_YELLOW]     = 'Black-Yellow',   -- 11
+                   [PillColor.PILL_WHITE_BLACK]      = 'White-Black',    -- 12
+                   [PillColor.PILL_WHITE_YELLOW]     = 'White-Yellow'    -- 13
                  }
+if REPENTANCE then
+  mod.pillColors[PillColor.PILL_GOLD] = 'Gold-Gold' -- 14
+end
 
 mod.pillEffects = {
                     [PillEffect.PILLEFFECT_NULL] = 'Not overriden' -- -1
@@ -33,56 +35,56 @@ mod.pillEffectsMax = PillEffect.PILLEFFECT_NULL
 
 -- the api returns labels instead of names due to multi-language support which isn't properly exposed in the api
 mod.pillEffectLabels = {
-                         ['#BAD_GAS_NAME'] = 'Bad Gas',                                                        -- 0
-                         ['#BAD_TRIP_NAME'] = 'Bad Trip',                                                      -- 1
-                         ['#BALLS_OF_STEEL_NAME'] = 'Balls of Steel',                                          -- 2
-                         ['#BOMBS_ARE_KEY_NAME'] = 'Bombs are Key',                                            -- 3
-                         ['#EXPLOSIVE_DIARRHEA_NAME'] = 'Explosive Diarrhea',                                  -- 4
-                         ['#FULL_HEALTH_NAME'] = 'Full Health',                                                -- 5
-                         ['#HEALTH_DOWN_NAME'] = 'Health Down',                                                -- 6
-                         ['#HEALTH_UP_NAME'] = 'Health Up',                                                    -- 7
-                         ['#I_FOUND_PILLS_NAME'] = 'I Found Pills',                                            -- 8
-                         ['#PUBERTY_NAME'] = 'Puberty',                                                        -- 9
-                         ['#PRETTY_FLY_NAME'] = 'Pretty Fly',                                                  -- 10
-                         ['#RANGE_DOWN_NAME'] = 'Range Down',                                                  -- 11
-                         ['#RANGE_UP_NAME'] = 'Range Up',                                                      -- 12
-                         ['#SPEED_DOWN_NAME'] = 'Speed Down',                                                  -- 13
-                         ['#SPEED_UP_NAME'] = 'Speed Up',                                                      -- 14
-                         ['#TEARS_DOWN_NAME'] = 'Tears Down',                                                  -- 15
-                         ['#TEARS_UP_NAME'] = 'Tears Up',                                                      -- 16
-                         ['#LUCK_DOWN_NAME'] = 'Luck Down',                                                    -- 17
-                         ['#LUCK_UP_NAME'] = 'Luck Up',                                                        -- 18
-                         ['#TELEPILLS_NAME'] = 'Telepills',                                                    -- 19
-                         ['#48_HOUR_ENERGY_NAME'] = '48 Hour Energy',                                          -- 20
-                         ['#HEMATEMESIS_NAME'] = 'Hematemesis',                                                -- 21
-                         ['#PARALYSIS_NAME'] = 'Paralysis',                                                    -- 22
-                         ['#I_CAN_SEE_FOREVER_NAME'] = 'I can see forever!',                                   -- 23
-                         ['#PHEROMONES_NAME'] = 'Pheromones',                                                  -- 24
-                         ['#AMNESIA_NAME'] = 'Amnesia',                                                        -- 25
-                         ['#LEMON_PARTY_NAME'] = 'Lemon Party',                                                -- 26
-                         ['#R_U_A_WIZARD_NAME'] = 'R U A Wizard?',                                             -- 27
-                         ['#PERCS_NAME'] = 'Percs!',                                                           -- 28
-                         ['#ADDICTED_NAME'] = 'Addicted!',                                                     -- 29
-                         ['#RELAX_NAME'] = 'Re-Lax',                                                           -- 30
-                         ['#QUESTION_MARKS_NAME'] = '???',                                                     -- 31
-                         ['#ONE_MAKES_YOU_LARGER_NAME'] = 'One makes you larger',                              -- 32
-                         ['#ONE_MAKES_YOU_SMALL_NAME'] = 'One makes you small',                                -- 33
-                         ['#INFESTED_NAME_1'] = 'Infested!',                                                   -- 34
-                         ['#INFESTED_NAME_2'] = 'Infested?',                                                   -- 35
-                         ['#POWER_PILL_NAME'] = 'Power Pill!',                                                 -- 36
-                         ['#RETRO_VISION_NAME'] = 'Retro Vision',                                              -- 37
-                         ['#FRIENDS_TILL_THE_END_NAME'] = 'Friends Till The End!',                             -- 38
-                         ['#XLAX_NAME'] = 'X-Lax',                                                             -- 39
-                         ['#SOMETHINGS_WRONG_NAME'] = 'Something\'s wrong...',                                 -- 40
-                         ['#IM_DROWSY_NAME'] = 'I\'m Drowsy...',                                               -- 41
-                         ['#IM_EXCITED_NAME'] = 'I\'m Excited!!!',                                             -- 42
-                         ['#GULP_NAME'] = 'Gulp!',                                                             -- 43
-                         ['#HORF_NAME'] = 'Horf!',                                                             -- 44
+                         ['#BAD_GAS_NAME']                           = 'Bad Gas',                              -- 0
+                         ['#BAD_TRIP_NAME']                          = 'Bad Trip',                             -- 1
+                         ['#BALLS_OF_STEEL_NAME']                    = 'Balls of Steel',                       -- 2
+                         ['#BOMBS_ARE_KEY_NAME']                     = 'Bombs are Key',                        -- 3
+                         ['#EXPLOSIVE_DIARRHEA_NAME']                = 'Explosive Diarrhea',                   -- 4
+                         ['#FULL_HEALTH_NAME']                       = 'Full Health',                          -- 5
+                         ['#HEALTH_DOWN_NAME']                       = 'Health Down',                          -- 6
+                         ['#HEALTH_UP_NAME']                         = 'Health Up',                            -- 7
+                         ['#I_FOUND_PILLS_NAME']                     = 'I Found Pills',                        -- 8
+                         ['#PUBERTY_NAME']                           = 'Puberty',                              -- 9
+                         ['#PRETTY_FLY_NAME']                        = 'Pretty Fly',                           -- 10
+                         ['#RANGE_DOWN_NAME']                        = 'Range Down',                           -- 11
+                         ['#RANGE_UP_NAME']                          = 'Range Up',                             -- 12
+                         ['#SPEED_DOWN_NAME']                        = 'Speed Down',                           -- 13
+                         ['#SPEED_UP_NAME']                          = 'Speed Up',                             -- 14
+                         ['#TEARS_DOWN_NAME']                        = 'Tears Down',                           -- 15
+                         ['#TEARS_UP_NAME']                          = 'Tears Up',                             -- 16
+                         ['#LUCK_DOWN_NAME']                         = 'Luck Down',                            -- 17
+                         ['#LUCK_UP_NAME']                           = 'Luck Up',                              -- 18
+                         ['#TELEPILLS_NAME']                         = 'Telepills',                            -- 19
+                         ['#48_HOUR_ENERGY_NAME']                    = '48 Hour Energy',                       -- 20
+                         ['#HEMATEMESIS_NAME']                       = 'Hematemesis',                          -- 21
+                         ['#PARALYSIS_NAME']                         = 'Paralysis',                            -- 22
+                         ['#I_CAN_SEE_FOREVER_NAME']                 = 'I can see forever!',                   -- 23
+                         ['#PHEROMONES_NAME']                        = 'Pheromones',                           -- 24
+                         ['#AMNESIA_NAME']                           = 'Amnesia',                              -- 25
+                         ['#LEMON_PARTY_NAME']                       = 'Lemon Party',                          -- 26
+                         ['#R_U_A_WIZARD_NAME']                      = 'R U A Wizard?',                        -- 27
+                         ['#PERCS_NAME']                             = 'Percs!',                               -- 28
+                         ['#ADDICTED_NAME']                          = 'Addicted!',                            -- 29
+                         ['#RELAX_NAME']                             = 'Re-Lax',                               -- 30
+                         ['#QUESTION_MARKS_NAME']                    = '???',                                  -- 31
+                         ['#ONE_MAKES_YOU_LARGER_NAME']              = 'One makes you larger',                 -- 32
+                         ['#ONE_MAKES_YOU_SMALL_NAME']               = 'One makes you small',                  -- 33
+                         ['#INFESTED_NAME_1']                        = 'Infested!',                            -- 34
+                         ['#INFESTED_NAME_2']                        = 'Infested?',                            -- 35
+                         ['#POWER_PILL_NAME']                        = 'Power Pill!',                          -- 36
+                         ['#RETRO_VISION_NAME']                      = 'Retro Vision',                         -- 37
+                         ['#FRIENDS_TILL_THE_END_NAME']              = 'Friends Till The End!',                -- 38
+                         ['#XLAX_NAME']                              = 'X-Lax',                                -- 39
+                         ['#SOMETHINGS_WRONG_NAME']                  = 'Something\'s wrong...',                -- 40
+                         ['#IM_DROWSY_NAME']                         = 'I\'m Drowsy...',                       -- 41
+                         ['#IM_EXCITED_NAME']                        = 'I\'m Excited!!!',                      -- 42
+                         ['#GULP_NAME']                              = 'Gulp!',                                -- 43
+                         ['#HORF_NAME']                              = 'Horf!',                                -- 44
                          ['#FEELS_LIKE_IM_WALKING_ON_SUNSHINE_NAME'] = 'Feels like I\'m walking on sunshine!', -- 45
-                         ['#VURP_NAME'] = 'Vurp!',                                                             -- 46
-                         ['#SHOT_SPEED_DOWN_NAME'] = 'Shot Speed Down',                                        -- 47
-                         ['#SHOT_SPEED_UP_NAME'] = 'Shot Speed Up',                                            -- 48
-                         ['#EXPERIMENTAL_PILL_NAME'] = 'Experimental Pill'                                     -- 49
+                         ['#VURP_NAME']                              = 'Vurp!',                                -- 46
+                         ['#SHOT_SPEED_DOWN_NAME']                   = 'Shot Speed Down',                      -- 47
+                         ['#SHOT_SPEED_UP_NAME']                     = 'Shot Speed Up',                        -- 48
+                         ['#EXPERIMENTAL_PILL_NAME']                 = 'Experimental Pill'                     -- 49
                        }
 
 -- phd / lucky foot / virgo
@@ -92,7 +94,6 @@ mod.badToGoodPillEffects = {
                              [PillEffect.PILLEFFECT_SPEED_DOWN]      = PillEffect.PILLEFFECT_SPEED_UP,
                              [PillEffect.PILLEFFECT_TEARS_DOWN]      = PillEffect.PILLEFFECT_TEARS_UP,
                              [PillEffect.PILLEFFECT_LUCK_DOWN]       = PillEffect.PILLEFFECT_LUCK_UP,
-                             [PillEffect.PILLEFFECT_SHOT_SPEED_DOWN] = PillEffect.PILLEFFECT_SHOT_SPEED_UP,
                              [PillEffect.PILLEFFECT_AMNESIA]         = PillEffect.PILLEFFECT_SEE_FOREVER,
                              [PillEffect.PILLEFFECT_QUESTIONMARK]    = PillEffect.PILLEFFECT_TELEPILLS,
                              [PillEffect.PILLEFFECT_ADDICTED]        = PillEffect.PILLEFFECT_PERCS,
@@ -101,42 +102,47 @@ mod.badToGoodPillEffects = {
                              [PillEffect.PILLEFFECT_RETRO_VISION]    = PillEffect.PILLEFFECT_SEE_FOREVER,
                              [PillEffect.PILLEFFECT_WIZARD]          = PillEffect.PILLEFFECT_POWER,
                              [PillEffect.PILLEFFECT_X_LAX]           = PillEffect.PILLEFFECT_SOMETHINGS_WRONG,
-                             [PillEffect.PILLEFFECT_BAD_TRIP]        = PillEffect.PILLEFFECT_BALLS_OF_STEEL
+                             [PillEffect.PILLEFFECT_BAD_TRIP]        = PillEffect.PILLEFFECT_FULL_HEALTH
                            }
+if REPENTANCE then
+  mod.badToGoodPillEffects[PillEffect.PILLEFFECT_BAD_TRIP]        = PillEffect.PILLEFFECT_BALLS_OF_STEEL
+  mod.badToGoodPillEffects[PillEffect.PILLEFFECT_SHOT_SPEED_DOWN] = PillEffect.PILLEFFECT_SHOT_SPEED_UP
+end
 
 -- false phd
-mod.goodToBadPillEffects = {
-                             [PillEffect.PILLEFFECT_HEALTH_UP]            = PillEffect.PILLEFFECT_HEALTH_DOWN,
-                             [PillEffect.PILLEFFECT_RANGE_UP]             = PillEffect.PILLEFFECT_RANGE_DOWN,
-                             [PillEffect.PILLEFFECT_SPEED_UP]             = PillEffect.PILLEFFECT_SPEED_DOWN,
-                             [PillEffect.PILLEFFECT_TEARS_UP]             = PillEffect.PILLEFFECT_TEARS_DOWN,
-                             [PillEffect.PILLEFFECT_LUCK_UP]              = PillEffect.PILLEFFECT_LUCK_DOWN,
-                             [PillEffect.PILLEFFECT_SHOT_SPEED_UP]        = PillEffect.PILLEFFECT_SHOT_SPEED_DOWN,
-                             [PillEffect.PILLEFFECT_BAD_GAS]              = PillEffect.PILLEFFECT_HEALTH_DOWN,
-                             [PillEffect.PILLEFFECT_FRIENDS_TILL_THE_END] = PillEffect.PILLEFFECT_HEALTH_DOWN,
-                             [PillEffect.PILLEFFECT_SEE_FOREVER]          = PillEffect.PILLEFFECT_AMNESIA,
-                             [PillEffect.PILLEFFECT_LEMON_PARTY]          = PillEffect.PILLEFFECT_AMNESIA,
-                             [PillEffect.PILLEFFECT_EXPLOSIVE_DIARRHEA]   = PillEffect.PILLEFFECT_RANGE_DOWN,
-                             [PillEffect.PILLEFFECT_LARGER]               = PillEffect.PILLEFFECT_RANGE_DOWN,
-                             [PillEffect.PILLEFFECT_BOMBS_ARE_KEYS]       = PillEffect.PILLEFFECT_TEARS_DOWN,
-                             [PillEffect.PILLEFFECT_INFESTED_EXCLAMATION] = PillEffect.PILLEFFECT_TEARS_DOWN,
-                             [PillEffect.PILLEFFECT_48HOUR_ENERGY]        = PillEffect.PILLEFFECT_SPEED_DOWN,
-                             [PillEffect.PILLEFFECT_SMALLER]              = PillEffect.PILLEFFECT_SPEED_DOWN,
-                             [PillEffect.PILLEFFECT_PRETTY_FLY]           = PillEffect.PILLEFFECT_LUCK_DOWN,
-                             [PillEffect.PILLEFFECT_INFESTED_QUESTION]    = PillEffect.PILLEFFECT_LUCK_DOWN,
-                             [PillEffect.PILLEFFECT_BALLS_OF_STEEL]       = PillEffect.PILLEFFECT_BAD_TRIP,
-                             [PillEffect.PILLEFFECT_FULL_HEALTH]          = PillEffect.PILLEFFECT_BAD_TRIP,
-                             [PillEffect.PILLEFFECT_HEMATEMESIS]          = PillEffect.PILLEFFECT_BAD_TRIP,
-                             [PillEffect.PILLEFFECT_PHEROMONES]           = PillEffect.PILLEFFECT_PARALYSIS,
-                             [PillEffect.PILLEFFECT_TELEPILLS]            = PillEffect.PILLEFFECT_QUESTIONMARK,
-                             [PillEffect.PILLEFFECT_IM_DROWSY]            = PillEffect.PILLEFFECT_IM_EXCITED,
-                             [PillEffect.PILLEFFECT_PERCS]                = PillEffect.PILLEFFECT_ADDICTED,
-                             [PillEffect.PILLEFFECT_SUNSHINE]             = PillEffect.PILLEFFECT_RETRO_VISION,
-                             [PillEffect.PILLEFFECT_POWER]                = PillEffect.PILLEFFECT_WIZARD,
-                             [PillEffect.PILLEFFECT_SOMETHINGS_WRONG]     = PillEffect.PILLEFFECT_X_LAX,
-                             [PillEffect.PILLEFFECT_GULP]                 = PillEffect.PILLEFFECT_HORF,
-                             [PillEffect.PILLEFFECT_VURP]                 = PillEffect.PILLEFFECT_HORF
-                           }
+mod.goodToBadPillEffects = {}
+if REPENTANCE then
+  mod.goodToBadPillEffects[PillEffect.PILLEFFECT_HEALTH_UP]            = PillEffect.PILLEFFECT_HEALTH_DOWN
+  mod.goodToBadPillEffects[PillEffect.PILLEFFECT_RANGE_UP]             = PillEffect.PILLEFFECT_RANGE_DOWN
+  mod.goodToBadPillEffects[PillEffect.PILLEFFECT_SPEED_UP]             = PillEffect.PILLEFFECT_SPEED_DOWN
+  mod.goodToBadPillEffects[PillEffect.PILLEFFECT_TEARS_UP]             = PillEffect.PILLEFFECT_TEARS_DOWN
+  mod.goodToBadPillEffects[PillEffect.PILLEFFECT_LUCK_UP]              = PillEffect.PILLEFFECT_LUCK_DOWN
+  mod.goodToBadPillEffects[PillEffect.PILLEFFECT_SHOT_SPEED_UP]        = PillEffect.PILLEFFECT_SHOT_SPEED_DOWN
+  mod.goodToBadPillEffects[PillEffect.PILLEFFECT_BAD_GAS]              = PillEffect.PILLEFFECT_HEALTH_DOWN
+  mod.goodToBadPillEffects[PillEffect.PILLEFFECT_FRIENDS_TILL_THE_END] = PillEffect.PILLEFFECT_HEALTH_DOWN
+  mod.goodToBadPillEffects[PillEffect.PILLEFFECT_SEE_FOREVER]          = PillEffect.PILLEFFECT_AMNESIA
+  mod.goodToBadPillEffects[PillEffect.PILLEFFECT_LEMON_PARTY]          = PillEffect.PILLEFFECT_AMNESIA
+  mod.goodToBadPillEffects[PillEffect.PILLEFFECT_EXPLOSIVE_DIARRHEA]   = PillEffect.PILLEFFECT_RANGE_DOWN
+  mod.goodToBadPillEffects[PillEffect.PILLEFFECT_LARGER]               = PillEffect.PILLEFFECT_RANGE_DOWN
+  mod.goodToBadPillEffects[PillEffect.PILLEFFECT_BOMBS_ARE_KEYS]       = PillEffect.PILLEFFECT_TEARS_DOWN
+  mod.goodToBadPillEffects[PillEffect.PILLEFFECT_INFESTED_EXCLAMATION] = PillEffect.PILLEFFECT_TEARS_DOWN
+  mod.goodToBadPillEffects[PillEffect.PILLEFFECT_48HOUR_ENERGY]        = PillEffect.PILLEFFECT_SPEED_DOWN
+  mod.goodToBadPillEffects[PillEffect.PILLEFFECT_SMALLER]              = PillEffect.PILLEFFECT_SPEED_DOWN
+  mod.goodToBadPillEffects[PillEffect.PILLEFFECT_PRETTY_FLY]           = PillEffect.PILLEFFECT_LUCK_DOWN
+  mod.goodToBadPillEffects[PillEffect.PILLEFFECT_INFESTED_QUESTION]    = PillEffect.PILLEFFECT_LUCK_DOWN
+  mod.goodToBadPillEffects[PillEffect.PILLEFFECT_BALLS_OF_STEEL]       = PillEffect.PILLEFFECT_BAD_TRIP
+  mod.goodToBadPillEffects[PillEffect.PILLEFFECT_FULL_HEALTH]          = PillEffect.PILLEFFECT_BAD_TRIP
+  mod.goodToBadPillEffects[PillEffect.PILLEFFECT_HEMATEMESIS]          = PillEffect.PILLEFFECT_BAD_TRIP
+  mod.goodToBadPillEffects[PillEffect.PILLEFFECT_PHEROMONES]           = PillEffect.PILLEFFECT_PARALYSIS
+  mod.goodToBadPillEffects[PillEffect.PILLEFFECT_TELEPILLS]            = PillEffect.PILLEFFECT_QUESTIONMARK
+  mod.goodToBadPillEffects[PillEffect.PILLEFFECT_IM_DROWSY]            = PillEffect.PILLEFFECT_IM_EXCITED
+  mod.goodToBadPillEffects[PillEffect.PILLEFFECT_PERCS]                = PillEffect.PILLEFFECT_ADDICTED
+  mod.goodToBadPillEffects[PillEffect.PILLEFFECT_SUNSHINE]             = PillEffect.PILLEFFECT_RETRO_VISION
+  mod.goodToBadPillEffects[PillEffect.PILLEFFECT_POWER]                = PillEffect.PILLEFFECT_WIZARD
+  mod.goodToBadPillEffects[PillEffect.PILLEFFECT_SOMETHINGS_WRONG]     = PillEffect.PILLEFFECT_X_LAX
+  mod.goodToBadPillEffects[PillEffect.PILLEFFECT_GULP]                 = PillEffect.PILLEFFECT_HORF
+  mod.goodToBadPillEffects[PillEffect.PILLEFFECT_VURP]                 = PillEffect.PILLEFFECT_HORF
+end
 
 mod.state = {}
 mod.state.identifyPills = false
@@ -170,9 +176,11 @@ mod.state.pillColors = {
                          { color = PillColor.PILL_WHITE_AZURE,      effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
                          { color = PillColor.PILL_BLACK_YELLOW,     effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
                          { color = PillColor.PILL_WHITE_BLACK,      effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
-                         { color = PillColor.PILL_WHITE_YELLOW,     effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
-                         { color = PillColor.PILL_GOLD,             effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 }
+                         { color = PillColor.PILL_WHITE_YELLOW,     effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 }
                        }
+if REPENTANCE then
+  table.insert(mod.state.pillColors, { color = PillColor.PILL_GOLD, effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 })
+end
 mod.state.pillEffects = {
                           { effect = PillEffect.PILLEFFECT_BAD_GAS,              override = PillEffect.PILLEFFECT_NULL },
                           { effect = PillEffect.PILLEFFECT_BAD_TRIP,             override = PillEffect.PILLEFFECT_NULL },
@@ -220,11 +228,13 @@ mod.state.pillEffects = {
                           { effect = PillEffect.PILLEFFECT_GULP,                 override = PillEffect.PILLEFFECT_NULL },
                           { effect = PillEffect.PILLEFFECT_HORF,                 override = PillEffect.PILLEFFECT_NULL },
                           { effect = PillEffect.PILLEFFECT_SUNSHINE,             override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_VURP,                 override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_SHOT_SPEED_DOWN,      override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_SHOT_SPEED_UP,        override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_EXPERIMENTAL,         override = PillEffect.PILLEFFECT_NULL }
+                          { effect = PillEffect.PILLEFFECT_VURP,                 override = PillEffect.PILLEFFECT_NULL }
                         }
+if REPENTANCE then
+  table.insert(mod.state.pillEffects, { effect = PillEffect.PILLEFFECT_SHOT_SPEED_DOWN, override = PillEffect.PILLEFFECT_NULL })
+  table.insert(mod.state.pillEffects, { effect = PillEffect.PILLEFFECT_SHOT_SPEED_UP,   override = PillEffect.PILLEFFECT_NULL })
+  table.insert(mod.state.pillEffects, { effect = PillEffect.PILLEFFECT_EXPERIMENTAL,    override = PillEffect.PILLEFFECT_NULL })
+end
 
 function mod:onGameStart(isContinue)
   mod:fillPillEffects()
@@ -252,7 +262,7 @@ function mod:onGameStart(isContinue)
       end
       if type(state.pillColors) == 'table' then
         for _, v in ipairs(state.pillColors) do
-          if math.type(v.color) == 'integer' and v.color >= PillColor.PILL_BLUE_BLUE and v.color <= PillColor.PILL_GOLD then
+          if math.type(v.color) == 'integer' and v.color > PillColor.PILL_NULL and v.color < PillColor.NUM_PILLS then
             for _, w in ipairs(mod.state.pillColors) do
               if v.color == w.color then
                 if math.type(v.effect) == 'integer' and v.effect >= PillEffect.PILLEFFECT_NULL and v.effect <= mod.pillEffectsMax then
@@ -261,7 +271,7 @@ function mod:onGameStart(isContinue)
                 if math.type(v.weightStd) == 'integer' and v.weightStd >= 0 and v.weightStd <= 11 then
                   w.weightStd = v.weightStd
                 end
-                if math.type(v.weightHorse) == 'integer' and v.weightHorse >= 0 and v.weightHorse <= 11 then
+                if REPENTANCE and math.type(v.weightHorse) == 'integer' and v.weightHorse >= 0 and v.weightHorse <= 11 then
                   w.weightHorse = v.weightHorse
                 end
                 break
@@ -272,7 +282,7 @@ function mod:onGameStart(isContinue)
       end
       if type(state.pillEffects) == 'table' then
         for _, v in ipairs(state.pillEffects) do
-          if math.type(v.effect) == 'integer' and v.effect >= PillEffect.PILLEFFECT_BAD_GAS and v.effect <= PillEffect.PILLEFFECT_EXPERIMENTAL then
+          if math.type(v.effect) == 'integer' and v.effect > PillEffect.PILLEFFECT_NULL and v.effect < PillEffect.NUM_PILL_EFFECTS then
             for _, w in ipairs(mod.state.pillEffects) do
               if v.effect == w.effect then
                 if math.type(v.override) == 'integer' and v.override >= PillEffect.PILLEFFECT_NULL and v.override <= mod.pillEffectsMax then
@@ -327,8 +337,10 @@ function mod:getPillColor(seed)
     for i = 1, v.weightStd do
       table.insert(weightedColors, v.color)
     end
-    for i = 1, v.weightHorse do
-      table.insert(weightedColors, PillColor.PILL_GIANT_FLAG + v.color)
+    if REPENTANCE then
+      for i = 1, v.weightHorse do
+        table.insert(weightedColors, PillColor.PILL_GIANT_FLAG + v.color)
+      end
     end
   end
   
@@ -380,9 +392,9 @@ function mod:fillPillEffects()
   for i = 0, size - 1 do
     local pillEffect = itemConfig:GetPillEffect(i)
     if pillEffect then
-      if i <= 49 then
+      if i < PillEffect.NUM_PILL_EFFECTS then
         -- it doesn't appear that you can remove pills from the XML (w/o crashing the game), but the names could be altered
-        mod.pillEffects[pillEffect.ID] = mod:lookupPillEffectName(pillEffect.Name)
+        mod.pillEffects[pillEffect.ID] = REPENTANCE and mod:lookupPillEffectName(pillEffect.Name) or pillEffect.Name
       else
         mod.pillEffects[pillEffect.ID] = '(M) ' .. pillEffect.Name
       end
@@ -446,18 +458,23 @@ function mod:doItemIntegration(effect)
     local tempEffect = nil
     
     local hasPHD = player:HasCollectible(CollectibleType.COLLECTIBLE_PHD, false)
-    local hasLuckyFoot = player:HasCollectible(CollectibleType.COLLECTIBLE_LUCKY_FOOT, false)
+    local hasLuckyFoot = REPENTANCE and player:HasCollectible(CollectibleType.COLLECTIBLE_LUCKY_FOOT, false) or false
     local hasVirgo = player:HasCollectible(CollectibleType.COLLECTIBLE_VIRGO, false)
-    local hasFalsePHD = player:HasCollectible(CollectibleType.COLLECTIBLE_FALSE_PHD, false)
+    local hasFalsePHD = REPENTANCE and player:HasCollectible(CollectibleType.COLLECTIBLE_FALSE_PHD, false) or false
     
     if effect == PillEffect.PILLEFFECT_BAD_TRIP or effect == PillEffect.PILLEFFECT_HEALTH_DOWN then
       local playerType = player:GetPlayerType()
       local maxHearts = player:GetMaxHearts() / 2
-      local hearts = (player:GetHearts() / 2) + (player:GetSoulHearts() / 2) + player:GetBoneHearts()
+      local hearts = (player:GetHearts() / 2) + (player:GetSoulHearts() / 2)
+      if REPENTANCE then
+        hearts = hearts + player:GetBoneHearts()
+      end
       
-      if playerType == PlayerType.PLAYER_BLUEBABY or playerType == PlayerType.PLAYER_BLUEBABY_B or
-         playerType == PlayerType.PLAYER_THESOUL or playerType == PlayerType.PLAYER_THEFORGOTTEN_B
-      then
+      local isSoulHeartPlayerType = REPENTANCE and (playerType == PlayerType.PLAYER_BLUEBABY   or playerType == PlayerType.PLAYER_THESOUL or
+                                                    playerType == PlayerType.PLAYER_BLUEBABY_B or playerType == PlayerType.PLAYER_THEFORGOTTEN_B)
+                                                or (playerType == PlayerType.PLAYER_XXX        or playerType == PlayerType.PLAYER_THESOUL)
+      
+      if isSoulHeartPlayerType then
         maxHearts = player:GetSoulHearts() / 2
       end
       
@@ -492,7 +509,21 @@ function mod:getSinglePlayer()
   local players = {}
   for i = 0, game:GetNumPlayers() - 1 do
     local player = game:GetPlayer(i)
-    if player:GetBabySkin() == BabySubType.BABY_UNASSIGNED and not player:IsCoopGhost() and player.Parent == nil then
+    local isBaby = player:GetBabySkin() ~= BabySubType.BABY_UNASSIGNED
+    local isCoopGhost = REPENTANCE and player:IsCoopGhost() or false
+    local isChild = player.Parent ~= nil
+    if not REPENTANCE then -- check for true co-op in AB+
+      local data = player:GetData()
+      if type(data) == 'table' and type(data.TrueCoop) == 'table' then
+        if isBaby and data.TrueCoop.CoopPlayer == true then
+          isBaby = false
+        end
+        if type(data.TrueCoop.Save) == 'table' and data.TrueCoop.Save.IsGhost == true then
+          isCoopGhost = true
+        end
+      end
+    end
+    if not isBaby and not isCoopGhost and not isChild then
       table.insert(players, player)
     end
   end
@@ -506,7 +537,7 @@ function mod:getSinglePlayer()
 end
 
 function mod:isTaintedForgotten(player)
-  if player:GetPlayerType() == PlayerType.PLAYER_THEFORGOTTEN_B then
+  if REPENTANCE and player:GetPlayerType() == PlayerType.PLAYER_THEFORGOTTEN_B then
     local twin = player:GetOtherTwin()
     if twin and twin:GetPlayerType() == PlayerType.PLAYER_THESOUL_B then
       return true
@@ -615,7 +646,7 @@ function mod:setupModConfigMenu()
       OnChange = function(b)
         mod.state.enableItemIntegration = b
       end,
-      Info = { 'Single player only / For overriden effects', 'Items: phd, lucky foot, virgo, false phd', '(+low health)' }
+      Info = { 'Single player only / For overriden effects', 'Items: ' .. (REPENTANCE and 'phd, lucky foot, virgo, false phd' or 'phd, virgo'), '(+low health)' }
     }
   )
   ModConfigMenu.AddSpace(mod.Name, 'General')
@@ -764,7 +795,9 @@ function mod:setupModConfigMenu()
       OnChange = function(b)
         for _, v in ipairs(mod.state.pillColors) do
           v.weightStd = 0
-          v.weightHorse = 0
+          if REPENTANCE then
+            v.weightHorse = 0
+          end
         end
       end,
       Info = { 'Reset all colors to zero' }
@@ -784,7 +817,9 @@ function mod:setupModConfigMenu()
       OnChange = function(b)
         for _, v in ipairs(mod.state.pillColors) do
           v.weightStd = mod.rng:RandomInt(11)
-          v.weightHorse = mod.rng:RandomInt(11)
+          if REPENTANCE then
+            v.weightHorse = mod.rng:RandomInt(11)
+          end
         end
       end,
       Info = { 'Randomize all colors' }
@@ -810,23 +845,25 @@ function mod:setupModConfigMenu()
         Info = { 'Choose relative weights for random pills' }
       }
     )
-    ModConfigMenu.AddSetting(
-      mod.Name,
-      'Colors',
-      {
-        Type = ModConfigMenu.OptionType.SCROLL,
-        CurrentSetting = function()
-          return v.weightHorse
-        end,
-        Display = function()
-          return 'Horse: $scroll' .. v.weightHorse
-        end,
-        OnChange = function(n)
-          v.weightHorse = n
-        end,
-        Info = { 'Choose relative weights for random pills' }
-      }
-    )
+    if REPENTANCE then
+      ModConfigMenu.AddSetting(
+        mod.Name,
+        'Colors',
+        {
+          Type = ModConfigMenu.OptionType.SCROLL,
+          CurrentSetting = function()
+            return v.weightHorse
+          end,
+          Display = function()
+            return 'Horse: $scroll' .. v.weightHorse
+          end,
+          OnChange = function(n)
+            v.weightHorse = n
+          end,
+          Info = { 'Choose relative weights for random pills' }
+        }
+      )
+    end
   end
   ModConfigMenu.AddSetting(
     mod.Name,
@@ -1025,23 +1062,25 @@ function mod:setupModConfigMenu()
         Info = { 'Spawn a standard pill' }
       }
     )
-    ModConfigMenu.AddSetting(
-      mod.Name,
-      'Spawn',
-      {
-        Type = ModConfigMenu.OptionType.BOOLEAN,
-        CurrentSetting = function()
-          return false
-        end,
-        Display = function()
-          return 'Horse'
-        end,
-        OnChange = function(b)
-          mod:spawnPill(v.color, true)
-        end,
-        Info = { 'Spawn a horse pill' }
-      }
-    )
+    if REPENTANCE then
+      ModConfigMenu.AddSetting(
+        mod.Name,
+        'Spawn',
+        {
+          Type = ModConfigMenu.OptionType.BOOLEAN,
+          CurrentSetting = function()
+            return false
+          end,
+          Display = function()
+            return 'Horse'
+          end,
+          OnChange = function(b)
+            mod:spawnPill(v.color, true)
+          end,
+          Info = { 'Spawn a horse pill' }
+        }
+      )
+    end
   end
   ModConfigMenu.AddSetting(
     mod.Name,
