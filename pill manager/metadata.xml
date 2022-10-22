@@ -13,7 +13,7 @@ There's two ways to set pill effects:
     [*]Override pill effects (Effects 1 and 2). Effects can be applied more specifically. Items like PHD can be emulated in single player only.
 [/list]
 
-Single player checks will exclude co-op babies and co-op ghosts. This includes Repentance co-op and the True Co-op mod for AB+. Due to how the game works, Jacob &amp; Esau are considered multiplayer.
+Single player checks will exclude co-op babies and co-op ghosts. Due to how the game works, Jacob &amp; Esau are considered multiplayer.
 
 Modded pill effects are supported.
 
@@ -63,7 +63,7 @@ Spawn random/specific/horse pills directly from the menu.
 [b][u]Info[/u][/b]
 
 View the current pill pool (including any overrides).</description>
-    <version>1.6</version>
+    <version>1.7</version>
     <visibility>Public</visibility>
     <tag id="Lua"/>
     <tag id="Pills"/>

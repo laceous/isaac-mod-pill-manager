@@ -512,17 +512,6 @@ function mod:getSinglePlayer()
     local isBaby = player:GetBabySkin() ~= BabySubType.BABY_UNASSIGNED
     local isCoopGhost = REPENTANCE and player:IsCoopGhost() or false
     local isChild = player.Parent ~= nil
-    if not REPENTANCE then -- check for true co-op in AB+
-      local data = player:GetData()
-      if type(data) == 'table' and type(data.TrueCoop) == 'table' then
-        if isBaby and data.TrueCoop.CoopPlayer == true then
-          isBaby = false
-        end
-        if type(data.TrueCoop.Save) == 'table' and data.TrueCoop.Save.IsGhost == true then
-          isCoopGhost = true
-        end
-      end
-    end
     if not isBaby and not isCoopGhost and not isChild then
       table.insert(players, player)
     end
