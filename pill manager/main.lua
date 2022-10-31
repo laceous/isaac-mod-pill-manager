@@ -462,7 +462,15 @@ function mod:doItemIntegration(effect)
     local hasVirgo = player:HasCollectible(CollectibleType.COLLECTIBLE_VIRGO, false)
     local hasFalsePHD = REPENTANCE and player:HasCollectible(CollectibleType.COLLECTIBLE_FALSE_PHD, false) or false
     
-    if effect == PillEffect.PILLEFFECT_BAD_TRIP or effect == PillEffect.PILLEFFECT_HEALTH_DOWN then
+    if hasFalsePHD then
+      if not (hasPHD or hasLuckyFoot or hasVirgo) then
+        tempEffect = mod.goodToBadPillEffects[effect]
+      end
+    elseif hasPHD or hasLuckyFoot or hasVirgo then
+      tempEffect = mod.badToGoodPillEffects[effect]
+    end
+    
+    if tempEffect == nil and (effect == PillEffect.PILLEFFECT_BAD_TRIP or effect == PillEffect.PILLEFFECT_HEALTH_DOWN) then
       local playerType = player:GetPlayerType()
       local maxHearts = player:GetMaxHearts() / 2
       local hearts = (player:GetHearts() / 2) + (player:GetSoulHearts() / 2)
@@ -482,16 +490,6 @@ function mod:doItemIntegration(effect)
         tempEffect = (hasFalsePHD and not (hasPHD or hasLuckyFoot or hasVirgo)) and PillEffect.PILLEFFECT_I_FOUND_PILLS or PillEffect.PILLEFFECT_FULL_HEALTH
       elseif effect == PillEffect.PILLEFFECT_HEALTH_DOWN and maxHearts <= 1 then
         tempEffect = (hasFalsePHD and not (hasPHD or hasLuckyFoot or hasVirgo)) and PillEffect.PILLEFFECT_I_FOUND_PILLS or PillEffect.PILLEFFECT_HEALTH_UP
-      end
-    end
-    
-    if tempEffect == nil then
-      if hasFalsePHD then
-        if not (hasPHD or hasLuckyFoot or hasVirgo) then
-          tempEffect = mod.goodToBadPillEffects[effect]
-        end
-      elseif hasPHD or hasLuckyFoot or hasVirgo then
-        tempEffect = mod.badToGoodPillEffects[effect]
       end
     end
     
