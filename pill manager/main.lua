@@ -89,20 +89,20 @@ mod.pillEffectLabels = {
 
 -- phd / lucky foot / virgo
 mod.badToGoodPillEffects = {
-                             [PillEffect.PILLEFFECT_HEALTH_DOWN]     = PillEffect.PILLEFFECT_HEALTH_UP,
-                             [PillEffect.PILLEFFECT_RANGE_DOWN]      = PillEffect.PILLEFFECT_RANGE_UP,
-                             [PillEffect.PILLEFFECT_SPEED_DOWN]      = PillEffect.PILLEFFECT_SPEED_UP,
-                             [PillEffect.PILLEFFECT_TEARS_DOWN]      = PillEffect.PILLEFFECT_TEARS_UP,
-                             [PillEffect.PILLEFFECT_LUCK_DOWN]       = PillEffect.PILLEFFECT_LUCK_UP,
-                             [PillEffect.PILLEFFECT_AMNESIA]         = PillEffect.PILLEFFECT_SEE_FOREVER,
-                             [PillEffect.PILLEFFECT_QUESTIONMARK]    = PillEffect.PILLEFFECT_TELEPILLS,
-                             [PillEffect.PILLEFFECT_ADDICTED]        = PillEffect.PILLEFFECT_PERCS,
-                             [PillEffect.PILLEFFECT_IM_EXCITED]      = PillEffect.PILLEFFECT_IM_DROWSY,
-                             [PillEffect.PILLEFFECT_PARALYSIS]       = PillEffect.PILLEFFECT_PHEROMONES,
-                             [PillEffect.PILLEFFECT_RETRO_VISION]    = PillEffect.PILLEFFECT_SEE_FOREVER,
-                             [PillEffect.PILLEFFECT_WIZARD]          = PillEffect.PILLEFFECT_POWER,
-                             [PillEffect.PILLEFFECT_X_LAX]           = PillEffect.PILLEFFECT_SOMETHINGS_WRONG,
-                             [PillEffect.PILLEFFECT_BAD_TRIP]        = PillEffect.PILLEFFECT_FULL_HEALTH
+                             [PillEffect.PILLEFFECT_HEALTH_DOWN]  = PillEffect.PILLEFFECT_HEALTH_UP,
+                             [PillEffect.PILLEFFECT_RANGE_DOWN]   = PillEffect.PILLEFFECT_RANGE_UP,
+                             [PillEffect.PILLEFFECT_SPEED_DOWN]   = PillEffect.PILLEFFECT_SPEED_UP,
+                             [PillEffect.PILLEFFECT_TEARS_DOWN]   = PillEffect.PILLEFFECT_TEARS_UP,
+                             [PillEffect.PILLEFFECT_LUCK_DOWN]    = PillEffect.PILLEFFECT_LUCK_UP,
+                             [PillEffect.PILLEFFECT_AMNESIA]      = PillEffect.PILLEFFECT_SEE_FOREVER,
+                             [PillEffect.PILLEFFECT_QUESTIONMARK] = PillEffect.PILLEFFECT_TELEPILLS,
+                             [PillEffect.PILLEFFECT_ADDICTED]     = PillEffect.PILLEFFECT_PERCS,
+                             [PillEffect.PILLEFFECT_IM_EXCITED]   = PillEffect.PILLEFFECT_IM_DROWSY,
+                             [PillEffect.PILLEFFECT_PARALYSIS]    = PillEffect.PILLEFFECT_PHEROMONES,
+                             [PillEffect.PILLEFFECT_RETRO_VISION] = PillEffect.PILLEFFECT_SEE_FOREVER,
+                             [PillEffect.PILLEFFECT_WIZARD]       = PillEffect.PILLEFFECT_POWER,
+                             [PillEffect.PILLEFFECT_X_LAX]        = PillEffect.PILLEFFECT_SOMETHINGS_WRONG,
+                             [PillEffect.PILLEFFECT_BAD_TRIP]     = PillEffect.PILLEFFECT_FULL_HEALTH
                            }
 if REPENTANCE then
   mod.badToGoodPillEffects[PillEffect.PILLEFFECT_BAD_TRIP]        = PillEffect.PILLEFFECT_BALLS_OF_STEEL
@@ -333,22 +333,28 @@ end
 
 function mod:getPillColor(seed)
   local weightedColors = {}
+  local totalWeight = 0
   for _, v in ipairs(mod.state.pillColors) do
-    for i = 1, v.weightStd do
-      table.insert(weightedColors, v.color)
+    if v.weightStd > 0 then
+      table.insert(weightedColors, { weight = v.weightStd, color = v.color })
+      totalWeight = totalWeight + v.weightStd
     end
-    if REPENTANCE then
-      for i = 1, v.weightHorse do
-        table.insert(weightedColors, PillColor.PILL_GIANT_FLAG + v.color)
-      end
+    if REPENTANCE and v.weightHorse > 0 then
+      table.insert(weightedColors, { weight = v.weightHorse, color = PillColor.PILL_GIANT_FLAG + v.color })
+      totalWeight = totalWeight + v.weightHorse
     end
   end
   
-  local weightedColorsCount = #weightedColors
-  if weightedColorsCount > 0 then
+  if totalWeight > 0 then
     local rng = RNG()
     rng:SetSeed(seed, 1)
-    return weightedColors[rng:RandomInt(weightedColorsCount) + 1]
+    local rand = rng:RandomInt(totalWeight) + 1
+    for _, v in ipairs(weightedColors) do
+      rand = rand - v.weight
+      if rand <= 0 then
+        return v.color
+      end
+    end
   end
   
   return nil
