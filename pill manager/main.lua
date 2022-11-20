@@ -149,91 +149,91 @@ mod.state.identifyPills = false
 mod.state.enableItemIntegration = false
 mod.state.shuffledAndHidden = false
 mod.state.startupEffects = {
-                             { effect = PillEffect.PILLEFFECT_NULL },
-                             { effect = PillEffect.PILLEFFECT_NULL },
-                             { effect = PillEffect.PILLEFFECT_NULL },
-                             { effect = PillEffect.PILLEFFECT_NULL },
-                             { effect = PillEffect.PILLEFFECT_NULL },
-                             { effect = PillEffect.PILLEFFECT_NULL },
-                             { effect = PillEffect.PILLEFFECT_NULL },
-                             { effect = PillEffect.PILLEFFECT_NULL },
-                             { effect = PillEffect.PILLEFFECT_NULL },
-                             { effect = PillEffect.PILLEFFECT_NULL },
-                             { effect = PillEffect.PILLEFFECT_NULL },
-                             { effect = PillEffect.PILLEFFECT_NULL },
-                             { effect = PillEffect.PILLEFFECT_NULL }
+                             PillEffect.PILLEFFECT_NULL,
+                             PillEffect.PILLEFFECT_NULL,
+                             PillEffect.PILLEFFECT_NULL,
+                             PillEffect.PILLEFFECT_NULL,
+                             PillEffect.PILLEFFECT_NULL,
+                             PillEffect.PILLEFFECT_NULL,
+                             PillEffect.PILLEFFECT_NULL,
+                             PillEffect.PILLEFFECT_NULL,
+                             PillEffect.PILLEFFECT_NULL,
+                             PillEffect.PILLEFFECT_NULL,
+                             PillEffect.PILLEFFECT_NULL,
+                             PillEffect.PILLEFFECT_NULL,
+                             PillEffect.PILLEFFECT_NULL
                            }
 mod.state.pillColors = {
-                         { color = PillColor.PILL_BLUE_BLUE,        effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
-                         { color = PillColor.PILL_WHITE_BLUE,       effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
-                         { color = PillColor.PILL_ORANGE_ORANGE,    effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
-                         { color = PillColor.PILL_WHITE_WHITE,      effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
-                         { color = PillColor.PILL_REDDOTS_RED,      effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
-                         { color = PillColor.PILL_PINK_RED,         effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
-                         { color = PillColor.PILL_BLUE_CADETBLUE,   effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
-                         { color = PillColor.PILL_YELLOW_ORANGE,    effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
-                         { color = PillColor.PILL_ORANGEDOTS_WHITE, effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
-                         { color = PillColor.PILL_WHITE_AZURE,      effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
-                         { color = PillColor.PILL_BLACK_YELLOW,     effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
-                         { color = PillColor.PILL_WHITE_BLACK,      effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
-                         { color = PillColor.PILL_WHITE_YELLOW,     effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 }
+                         [tostring(PillColor.PILL_BLUE_BLUE)]        = { effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
+                         [tostring(PillColor.PILL_WHITE_BLUE)]       = { effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
+                         [tostring(PillColor.PILL_ORANGE_ORANGE)]    = { effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
+                         [tostring(PillColor.PILL_WHITE_WHITE)]      = { effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
+                         [tostring(PillColor.PILL_REDDOTS_RED)]      = { effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
+                         [tostring(PillColor.PILL_PINK_RED)]         = { effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
+                         [tostring(PillColor.PILL_BLUE_CADETBLUE)]   = { effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
+                         [tostring(PillColor.PILL_YELLOW_ORANGE)]    = { effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
+                         [tostring(PillColor.PILL_ORANGEDOTS_WHITE)] = { effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
+                         [tostring(PillColor.PILL_WHITE_AZURE)]      = { effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
+                         [tostring(PillColor.PILL_BLACK_YELLOW)]     = { effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
+                         [tostring(PillColor.PILL_WHITE_BLACK)]      = { effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
+                         [tostring(PillColor.PILL_WHITE_YELLOW)]     = { effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 }
                        }
 if REPENTANCE then
-  table.insert(mod.state.pillColors, { color = PillColor.PILL_GOLD, effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 })
+  mod.state.pillColors[tostring(PillColor.PILL_GOLD)] = { effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 }
 end
-mod.state.pillEffects = {
-                          { effect = PillEffect.PILLEFFECT_BAD_GAS,              override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_BAD_TRIP,             override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_BALLS_OF_STEEL,       override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_BOMBS_ARE_KEYS,       override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_EXPLOSIVE_DIARRHEA,   override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_FULL_HEALTH,          override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_HEALTH_DOWN,          override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_HEALTH_UP,            override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_I_FOUND_PILLS,        override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_PUBERTY,              override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_PRETTY_FLY,           override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_RANGE_DOWN,           override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_RANGE_UP,             override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_SPEED_DOWN,           override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_SPEED_UP,             override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_TEARS_DOWN,           override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_TEARS_UP,             override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_LUCK_DOWN,            override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_LUCK_UP,              override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_TELEPILLS,            override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_48HOUR_ENERGY,        override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_HEMATEMESIS,          override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_PARALYSIS,            override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_SEE_FOREVER,          override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_PHEROMONES,           override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_AMNESIA,              override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_LEMON_PARTY,          override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_WIZARD,               override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_PERCS,                override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_ADDICTED,             override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_RELAX,                override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_QUESTIONMARK,         override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_LARGER,               override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_SMALLER,              override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_INFESTED_EXCLAMATION, override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_INFESTED_QUESTION,    override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_POWER,                override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_RETRO_VISION,         override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_FRIENDS_TILL_THE_END, override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_X_LAX,                override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_SOMETHINGS_WRONG,     override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_IM_DROWSY,            override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_IM_EXCITED,           override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_GULP,                 override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_HORF,                 override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_SUNSHINE,             override = PillEffect.PILLEFFECT_NULL },
-                          { effect = PillEffect.PILLEFFECT_VURP,                 override = PillEffect.PILLEFFECT_NULL }
+mod.state.pillEffects = { -- tostring because table to json is ambiguous (array/object)
+                          [tostring(PillEffect.PILLEFFECT_BAD_GAS)]              = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_BAD_TRIP)]             = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_BALLS_OF_STEEL)]       = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_BOMBS_ARE_KEYS)]       = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_EXPLOSIVE_DIARRHEA)]   = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_FULL_HEALTH)]          = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_HEALTH_DOWN)]          = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_HEALTH_UP)]            = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_I_FOUND_PILLS)]        = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_PUBERTY)]              = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_PRETTY_FLY)]           = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_RANGE_DOWN)]           = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_RANGE_UP)]             = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_SPEED_DOWN)]           = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_SPEED_UP)]             = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_TEARS_DOWN)]           = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_TEARS_UP)]             = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_LUCK_DOWN)]            = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_LUCK_UP)]              = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_TELEPILLS)]            = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_48HOUR_ENERGY)]        = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_HEMATEMESIS)]          = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_PARALYSIS)]            = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_SEE_FOREVER)]          = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_PHEROMONES)]           = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_AMNESIA)]              = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_LEMON_PARTY)]          = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_WIZARD)]               = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_PERCS)]                = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_ADDICTED)]             = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_RELAX)]                = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_QUESTIONMARK)]         = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_LARGER)]               = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_SMALLER)]              = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_INFESTED_EXCLAMATION)] = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_INFESTED_QUESTION)]    = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_POWER)]                = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_RETRO_VISION)]         = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_FRIENDS_TILL_THE_END)] = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_X_LAX)]                = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_SOMETHINGS_WRONG)]     = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_IM_DROWSY)]            = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_IM_EXCITED)]           = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_GULP)]                 = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_HORF)]                 = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_SUNSHINE)]             = PillEffect.PILLEFFECT_NULL,
+                          [tostring(PillEffect.PILLEFFECT_VURP)]                 = PillEffect.PILLEFFECT_NULL
                         }
 if REPENTANCE then
-  table.insert(mod.state.pillEffects, { effect = PillEffect.PILLEFFECT_SHOT_SPEED_DOWN, override = PillEffect.PILLEFFECT_NULL })
-  table.insert(mod.state.pillEffects, { effect = PillEffect.PILLEFFECT_SHOT_SPEED_UP,   override = PillEffect.PILLEFFECT_NULL })
-  table.insert(mod.state.pillEffects, { effect = PillEffect.PILLEFFECT_EXPERIMENTAL,    override = PillEffect.PILLEFFECT_NULL })
+  mod.state.pillEffects[tostring(PillEffect.PILLEFFECT_SHOT_SPEED_DOWN)] = PillEffect.PILLEFFECT_NULL
+  mod.state.pillEffects[tostring(PillEffect.PILLEFFECT_SHOT_SPEED_UP)]   = PillEffect.PILLEFFECT_NULL
+  mod.state.pillEffects[tostring(PillEffect.PILLEFFECT_EXPERIMENTAL)]    = PillEffect.PILLEFFECT_NULL
 end
 
 function mod:onGameStart(isContinue)
@@ -255,61 +255,49 @@ function mod:onGameStart(isContinue)
       end
       if type(state.startupEffects) == 'table' then
         for i, v in ipairs(state.startupEffects) do
-          if i >= 1 and i <= #mod.state.startupEffects and math.type(v.effect) == 'integer' and v.effect >= PillEffect.PILLEFFECT_NULL and v.effect <= mod.pillEffectsMax then
-            mod.state.startupEffects[i].effect = v.effect
+          if i >= 1 and i <= #mod.state.startupEffects and math.type(v) == 'integer' and v >= PillEffect.PILLEFFECT_NULL and v <= mod.pillEffectsMax then
+            mod.state.startupEffects[i] = v
           end
         end
       end
       if type(state.pillColors) == 'table' then
-        for _, v in ipairs(state.pillColors) do
-          if math.type(v.color) == 'integer' and v.color > PillColor.PILL_NULL and v.color < PillColor.NUM_PILLS then
-            for _, w in ipairs(mod.state.pillColors) do
-              if v.color == w.color then
-                if math.type(v.effect) == 'integer' and v.effect >= PillEffect.PILLEFFECT_NULL and v.effect <= mod.pillEffectsMax then
-                  w.effect = v.effect
-                end
-                if math.type(v.weightStd) == 'integer' and v.weightStd >= 0 and v.weightStd <= 11 then
-                  w.weightStd = v.weightStd
-                end
-                if REPENTANCE and math.type(v.weightHorse) == 'integer' and v.weightHorse >= 0 and v.weightHorse <= 11 then
-                  w.weightHorse = v.weightHorse
-                end
-                break
-              end
+        for k, v in pairs(state.pillColors) do
+          if mod.state.pillColors[k] and type(v) == 'table' then
+            if math.type(v.effect) == 'integer' and v.effect >= PillEffect.PILLEFFECT_NULL and v.effect <= mod.pillEffectsMax then
+              mod.state.pillColors[k].effect = v.effect
+            end
+            if math.type(v.weightStd) == 'integer' and v.weightStd >= 0 and v.weightStd <= 11 then
+              mod.state.pillColors[k].weightStd = v.weightStd
+            end
+            if REPENTANCE and math.type(v.weightHorse) == 'integer' and v.weightHorse >= 0 and v.weightHorse <= 11 then
+              mod.state.pillColors[k].weightHorse = v.weightHorse
             end
           end
         end
       end
       if type(state.pillEffects) == 'table' then
-        for _, v in ipairs(state.pillEffects) do
-          if math.type(v.effect) == 'integer' and v.effect > PillEffect.PILLEFFECT_NULL and v.effect < PillEffect.NUM_PILL_EFFECTS then
-            for _, w in ipairs(mod.state.pillEffects) do
-              if v.effect == w.effect then
-                if math.type(v.override) == 'integer' and v.override >= PillEffect.PILLEFFECT_NULL and v.override <= mod.pillEffectsMax then
-                  w.override = v.override
-                end
-                break
-              end
-            end
+        for k, v in pairs(state.pillEffects) do
+          if mod.state.pillEffects[k] and math.type(v) == 'integer' and v >= PillEffect.PILLEFFECT_NULL and v <= mod.pillEffectsMax then
+            mod.state.pillEffects[k] = v
           end
         end
       end
     end
   end
   
-  for _, v in ipairs(mod.state.startupEffects) do
+  for i = 1, #mod.state.startupEffects do
+    if mod.state.startupEffects[i] < PillEffect.PILLEFFECT_NULL or mod.state.startupEffects[i] > mod.pillEffectsMax then
+      mod.state.startupEffects[i] = PillEffect.PILLEFFECT_NULL
+    end
+  end
+  for _, v in pairs(mod.state.pillColors) do
     if v.effect < PillEffect.PILLEFFECT_NULL or v.effect > mod.pillEffectsMax then
       v.effect = PillEffect.PILLEFFECT_NULL
     end
   end
-  for _, v in ipairs(mod.state.pillColors) do
-    if v.effect < PillEffect.PILLEFFECT_NULL or v.effect > mod.pillEffectsMax then
-      v.effect = PillEffect.PILLEFFECT_NULL
-    end
-  end
-  for _, v in ipairs(mod.state.pillEffects) do
-    if v.override < PillEffect.PILLEFFECT_NULL or v.override > mod.pillEffectsMax then
-      v.override = PillEffect.PILLEFFECT_NULL
+  for k, v in pairs(mod.state.pillEffects) do
+    if v < PillEffect.PILLEFFECT_NULL or v > mod.pillEffectsMax then
+      mod.state.pillEffects[k] = PillEffect.PILLEFFECT_NULL
     end
   end
   
@@ -323,7 +311,7 @@ function mod:onGameStart(isContinue)
 end
 
 function mod:onGameExit()
-  mod:SaveData(json.encode(mod.state))
+  mod:save()
   mod:seedRng()
   
   mod.showUnidentifiedPills = false
@@ -334,13 +322,13 @@ end
 function mod:getPillColor(seed)
   local weightedColors = {}
   local totalWeight = 0
-  for _, v in ipairs(mod.state.pillColors) do
+  for k, v in pairs(mod.state.pillColors) do
     if v.weightStd > 0 then
-      table.insert(weightedColors, { weight = v.weightStd, color = v.color })
+      table.insert(weightedColors, { color = tonumber(k), weight = v.weightStd })
       totalWeight = totalWeight + v.weightStd
     end
     if REPENTANCE and v.weightHorse > 0 then
-      table.insert(weightedColors, { weight = v.weightHorse, color = PillColor.PILL_GIANT_FLAG + v.color })
+      table.insert(weightedColors, { color = PillColor.PILL_GIANT_FLAG + tonumber(k), weight = v.weightHorse })
       totalWeight = totalWeight + v.weightHorse
     end
   end
@@ -437,20 +425,18 @@ function mod:lookupPillEffectName(label)
 end
 
 function mod:getPillColorOverride(color)
-  for _, v in ipairs(mod.state.pillColors) do
-    if v.color == color then
-      return v.effect
-    end
+  local override = mod.state.pillColors[tostring(color)]
+  if override then
+    return override.effect
   end
   
   return PillEffect.PILLEFFECT_NULL
 end
 
 function mod:getPillEffectOverride(effect)
-  for _, v in ipairs(mod.state.pillEffects) do
-    if v.effect == effect then
-      return v.override
-    end
+  local override = mod.state.pillEffects[tostring(effect)]
+  if override then
+    return override
   end
   
   return PillEffect.PILLEFFECT_NULL
@@ -543,8 +529,8 @@ end
 function mod:setStartupEffects()
   local startupEffects = {}
   for _, v in ipairs(mod.state.startupEffects) do
-    if v.effect ~= PillEffect.PILLEFFECT_NULL and not mod:tableHasValue(startupEffects, v.effect) then
-      table.insert(startupEffects, v.effect)
+    if v ~= PillEffect.PILLEFFECT_NULL and not mod:tableHasValue(startupEffects, v) then
+      table.insert(startupEffects, v)
     end
   end
   
@@ -575,6 +561,10 @@ function mod:spawnPill(color, isHorse)
   local player = game:GetPlayer(0)
   local pill = (color ~= PillColor.PILL_NULL and isHorse) and PillColor.PILL_GIANT_FLAG + color or color
   Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_PILL, pill, Isaac.GetFreeNearPosition(player.Position, 3), Vector(0,0), nil)
+end
+
+function mod:save()
+  mod:SaveData(json.encode(mod.state))
 end
 
 function mod:tableHasValue(tbl, val)
@@ -621,6 +611,7 @@ function mod:setupModConfigMenu()
         if b then
           mod:identifyPills()
         end
+        mod:save()
       end,
       Info = { 'Note: you can\'t de-identify pills', 'during the current run' }
     }
@@ -638,6 +629,7 @@ function mod:setupModConfigMenu()
       end,
       OnChange = function(b)
         mod.state.enableItemIntegration = b
+        mod:save()
       end,
       Info = { 'Single player only / For overriden effects', 'Items: ' .. (REPENTANCE and 'phd, lucky foot, virgo, false phd' or 'phd, virgo'), '(+low health)' }
     }
@@ -708,9 +700,10 @@ function mod:setupModConfigMenu()
         return 'Reset'
       end,
       OnChange = function(b)
-        for _, v in ipairs(mod.state.startupEffects) do
-          v.effect = PillEffect.PILLEFFECT_NULL
+        for i = 1, #mod.state.startupEffects do
+          mod.state.startupEffects[i] = PillEffect.PILLEFFECT_NULL
         end
+        mod:save()
       end,
       Info = { 'Reset all startup effects' }
     }
@@ -727,30 +720,32 @@ function mod:setupModConfigMenu()
         return 'Randomize'
       end,
       OnChange = function(b)
-        for _, v in ipairs(mod.state.startupEffects) do
-          v.effect = mod.rng:RandomInt(mod.pillEffectsMax + 1)
+        for i = 1, #mod.state.startupEffects do
+          mod.state.startupEffects[i] = mod.rng:RandomInt(mod.pillEffectsMax + 1)
         end
+        mod:save()
       end,
       Info = { 'Randomize all startup effects' }
     }
   )
   ModConfigMenu.AddSpace(mod.Name, 'Startup')
-  for _, v in ipairs(mod.state.startupEffects) do
+  for i = 1, #mod.state.startupEffects do
     ModConfigMenu.AddSetting(
       mod.Name,
       'Startup',
       {
         Type = ModConfigMenu.OptionType.NUMBER,
         CurrentSetting = function()
-          return v.effect
+          return mod.state.startupEffects[i]
         end,
         Minimum = PillEffect.PILLEFFECT_NULL,
         Maximum = mod.pillEffectsMax,
         Display = function()
-          return '< ' .. ((v.effect ~= PillEffect.PILLEFFECT_NULL) and mod:getPillEffectName(v.effect) or 'None') .. ' >'
+          return '< ' .. ((mod.state.startupEffects[i] ~= PillEffect.PILLEFFECT_NULL) and mod:getPillEffectName(mod.state.startupEffects[i]) or 'None') .. ' >'
         end,
         OnChange = function(n)
-          v.effect = n
+          mod.state.startupEffects[i] = n
+          mod:save()
         end,
         Info = { 'Select a startup pill effect' }
       }
@@ -786,11 +781,12 @@ function mod:setupModConfigMenu()
         return 'Reset'
       end,
       OnChange = function(b)
-        for _, v in ipairs(mod.state.pillColors) do
+        for _, v in pairs(mod.state.pillColors) do
           v.weightStd = 0
           if REPENTANCE then
             v.weightHorse = 0
           end
+          mod:save()
         end
       end,
       Info = { 'Reset all colors to zero' }
@@ -808,32 +804,34 @@ function mod:setupModConfigMenu()
         return 'Randomize'
       end,
       OnChange = function(b)
-        for _, v in ipairs(mod.state.pillColors) do
+        for _, v in pairs(mod.state.pillColors) do
           v.weightStd = mod.rng:RandomInt(11)
           if REPENTANCE then
             v.weightHorse = mod.rng:RandomInt(11)
           end
+          mod:save()
         end
       end,
       Info = { 'Randomize all colors' }
     }
   )
-  for _, v in ipairs(mod.state.pillColors) do
+  for i = PillColor.PILL_NULL + 1, PillColor.NUM_PILLS - 1 do
     ModConfigMenu.AddSpace(mod.Name, 'Colors')
-    ModConfigMenu.AddTitle(mod.Name, 'Colors', mod:getPillColorName(v.color))
+    ModConfigMenu.AddTitle(mod.Name, 'Colors', mod:getPillColorName(i))
     ModConfigMenu.AddSetting(
       mod.Name,
       'Colors',
       {
         Type = ModConfigMenu.OptionType.SCROLL,
         CurrentSetting = function()
-          return v.weightStd
+          return mod.state.pillColors[tostring(i)].weightStd
         end,
         Display = function()
-          return 'Standard: $scroll' .. v.weightStd
+          return 'Standard: $scroll' .. mod.state.pillColors[tostring(i)].weightStd
         end,
         OnChange = function(n)
-          v.weightStd = n
+          mod.state.pillColors[tostring(i)].weightStd = n
+          mod:save()
         end,
         Info = { 'Choose relative weights for random pills' }
       }
@@ -845,13 +843,14 @@ function mod:setupModConfigMenu()
         {
           Type = ModConfigMenu.OptionType.SCROLL,
           CurrentSetting = function()
-            return v.weightHorse
+            return mod.state.pillColors[tostring(i)].weightHorse
           end,
           Display = function()
-            return 'Horse: $scroll' .. v.weightHorse
+            return 'Horse: $scroll' .. mod.state.pillColors[tostring(i)].weightHorse
           end,
           OnChange = function(n)
-            v.weightHorse = n
+            mod.state.pillColors[tostring(i)].weightHorse = n
+            mod:save()
           end,
           Info = { 'Choose relative weights for random pills' }
         }
@@ -871,9 +870,10 @@ function mod:setupModConfigMenu()
       end,
       OnChange = function(b)
         if not mod.state.shuffledAndHidden then
-          for _, v in ipairs(mod.state.pillColors) do
+          for _, v in pairs(mod.state.pillColors) do
             v.effect = PillEffect.PILLEFFECT_NULL
           end
+          mod:save()
         end
       end,
       Info = { 'Reset all effect overrides' }
@@ -892,9 +892,10 @@ function mod:setupModConfigMenu()
       end,
       OnChange = function(b)
         if not mod.state.shuffledAndHidden then
-          for _, v in ipairs(mod.state.pillColors) do
+          for _, v in pairs(mod.state.pillColors) do
             v.effect = mod.rng:RandomInt(mod.pillEffectsMax + 1)
           end
+          mod:save()
         end
       end,
       Info = { 'Randomize all effect overrides' }
@@ -916,40 +917,43 @@ function mod:setupModConfigMenu()
         
         if b then
           local tbl = {}
-          for _, v in ipairs(mod.state.pillColors) do
+          for _, v in pairs(mod.state.pillColors) do
             if v.effect ~= PillEffect.PILLEFFECT_NULL then
               table.insert(tbl, v.effect)
             end
           end
-          for _, v in ipairs(mod.state.pillColors) do
+          for _, v in pairs(mod.state.pillColors) do
             if v.effect ~= PillEffect.PILLEFFECT_NULL then
               v.effect = table.remove(tbl, mod.rng:RandomInt(#tbl) + 1)
             end
           end
         end
+        
+        mod:save()
       end,
       Info = { 'Shuffle all overriden effects', '& hide the results' }
     }
   )
-  for _, v in ipairs(mod.state.pillColors) do
+  for i = PillColor.PILL_NULL + 1, PillColor.NUM_PILLS - 1 do
     ModConfigMenu.AddSpace(mod.Name, 'Effects 1')
-    ModConfigMenu.AddTitle(mod.Name, 'Effects 1', mod:getPillColorName(v.color))
+    ModConfigMenu.AddTitle(mod.Name, 'Effects 1', mod:getPillColorName(i))
     ModConfigMenu.AddSetting(
       mod.Name,
       'Effects 1',
       {
         Type = ModConfigMenu.OptionType.NUMBER,
         CurrentSetting = function()
-          return v.effect
+          return mod.state.pillColors[tostring(i)].effect
         end,
         Minimum = PillEffect.PILLEFFECT_NULL,
         Maximum = mod.pillEffectsMax,
         Display = function()
-          return mod.state.shuffledAndHidden and 'Hidden' or mod:getPillEffectName(v.effect)
+          return mod.state.shuffledAndHidden and 'Hidden' or mod:getPillEffectName(mod.state.pillColors[tostring(i)].effect)
         end,
         OnChange = function(n)
           if not mod.state.shuffledAndHidden then
-            v.effect = n
+            mod.state.pillColors[tostring(i)].effect = n
+            mod:save()
           end
         end,
         Info = { 'Select a pill effect override' }
@@ -968,9 +972,10 @@ function mod:setupModConfigMenu()
         return 'Reset'
       end,
       OnChange = function(b)
-        for _, v in ipairs(mod.state.pillEffects) do
-          v.override = PillEffect.PILLEFFECT_NULL
+        for k, _ in pairs(mod.state.pillEffects) do
+          mod.state.pillEffects[k] = PillEffect.PILLEFFECT_NULL
         end
+        mod:save()
       end,
       Info = { 'Reset all effect overrides' }
     }
@@ -987,31 +992,33 @@ function mod:setupModConfigMenu()
         return 'Randomize'
       end,
       OnChange = function(b)
-        for _, v in ipairs(mod.state.pillEffects) do
-          v.override = mod.rng:RandomInt(mod.pillEffectsMax + 1)
+        for k, _ in pairs(mod.state.pillEffects) do
+          mod.state.pillEffects[k] = mod.rng:RandomInt(mod.pillEffectsMax + 1)
         end
+        mod:save()
       end,
       Info = { 'Randomize all effect overrides' }
     }
   )
-  for _, v in ipairs(mod.state.pillEffects) do
+  for i = PillEffect.PILLEFFECT_NULL + 1, PillEffect.NUM_PILL_EFFECTS - 1 do
     ModConfigMenu.AddSpace(mod.Name, 'Effects 2')
-    ModConfigMenu.AddTitle(mod.Name, 'Effects 2', mod:getPillEffectName(v.effect))
+    ModConfigMenu.AddTitle(mod.Name, 'Effects 2', mod:getPillEffectName(i))
     ModConfigMenu.AddSetting(
       mod.Name,
       'Effects 2',
       {
         Type = ModConfigMenu.OptionType.NUMBER,
         CurrentSetting = function()
-          return v.override
+          return mod.state.pillEffects[tostring(i)]
         end,
         Minimum = PillEffect.PILLEFFECT_NULL,
         Maximum = mod.pillEffectsMax,
         Display = function()
-          return mod:getPillEffectName(v.override)
+          return mod:getPillEffectName(mod.state.pillEffects[tostring(i)])
         end,
         OnChange = function(n)
-          v.override = n
+          mod.state.pillEffects[tostring(i)] = n
+          mod:save()
         end,
         Info = { 'Select a pill effect override' }
       }
@@ -1035,9 +1042,9 @@ function mod:setupModConfigMenu()
       Info = { 'Spawn a random pill' }
     }
   )
-  for _, v in ipairs(mod.state.pillColors) do
+  for i = PillColor.PILL_NULL + 1, PillColor.NUM_PILLS - 1 do
     ModConfigMenu.AddSpace(mod.Name, 'Spawn')
-    ModConfigMenu.AddTitle(mod.Name, 'Spawn', mod:getPillColorName(v.color))
+    ModConfigMenu.AddTitle(mod.Name, 'Spawn', mod:getPillColorName(i))
     ModConfigMenu.AddSetting(
       mod.Name,
       'Spawn',
@@ -1050,7 +1057,7 @@ function mod:setupModConfigMenu()
           return 'Standard'
         end,
         OnChange = function(b)
-          mod:spawnPill(v.color, false)
+          mod:spawnPill(i, false)
         end,
         Info = { 'Spawn a standard pill' }
       }
@@ -1068,7 +1075,7 @@ function mod:setupModConfigMenu()
             return 'Horse'
           end,
           OnChange = function(b)
-            mod:spawnPill(v.color, true)
+            mod:spawnPill(i, true)
           end,
           Info = { 'Spawn a horse pill' }
         }
@@ -1092,9 +1099,9 @@ function mod:setupModConfigMenu()
       Info = { 'Show or hide unidentified pills below' }
     }
   )
-  for _, v in ipairs(mod.state.pillColors) do
+  for i = PillColor.PILL_NULL + 1, PillColor.NUM_PILLS - 1 do
     ModConfigMenu.AddSpace(mod.Name, 'Info')
-    ModConfigMenu.AddTitle(mod.Name, 'Info', mod:getPillColorName(v.color))
+    ModConfigMenu.AddTitle(mod.Name, 'Info', mod:getPillColorName(i))
     ModConfigMenu.AddSetting(
       mod.Name,
       'Info',
@@ -1105,8 +1112,8 @@ function mod:setupModConfigMenu()
         end,
         Display = function()
           local itemPool = game:GetItemPool()
-          if mod.showUnidentifiedPills or itemPool:IsPillIdentified(v.color) then
-            return mod:getPillEffectName(itemPool:GetPillEffect(v.color, nil))
+          if mod.showUnidentifiedPills or itemPool:IsPillIdentified(i) then
+            return mod:getPillEffectName(itemPool:GetPillEffect(i, nil))
           end
           
           return 'Not identified'
