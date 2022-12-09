@@ -7,6 +7,7 @@ mod.pillEffectToAddToPool = PillEffect.PILLEFFECT_NULL + 1
 mod.forcedPillPoolColor = PillColor.PILL_NULL
 mod.forcedPillPoolTime = 0
 mod.rng = RNG()
+mod.rngShiftIndex = 35
 
 -- there's no standard api for adding pill colors
 mod.pillColors = {
@@ -335,7 +336,7 @@ function mod:getPillColor(seed)
   
   if totalWeight > 0 then
     local rng = RNG()
-    rng:SetSeed(seed, 1)
+    rng:SetSeed(seed, mod.rngShiftIndex)
     local rand = rng:RandomInt(totalWeight) + 1
     for _, v in ipairs(weightedColors) do
       rand = rand - v.weight
@@ -581,7 +582,7 @@ function mod:seedRng()
   repeat
     local rand = Random()  -- 0 to 2^32
     if rand > 0 then       -- if this is 0, it causes a crash later on
-      mod.rng:SetSeed(rand, 1)
+      mod.rng:SetSeed(rand, mod.rngShiftIndex)
     end
   until(rand > 0)
 end
