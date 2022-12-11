@@ -9,24 +9,90 @@ mod.forcedPillPoolTime = 0
 mod.rng = RNG()
 mod.rngShiftIndex = 35
 
+mod.renderPillColor = PillColor.PILL_NULL
+mod.spriteStdIdle = Sprite()
+mod.spriteStdHUD = Sprite()
+if REPENTANCE then
+  mod.spriteHorseIdle = Sprite()
+  mod.spriteHorseHUD = Sprite()
+else
+  mod.anm2CardsPills = 'gfx/ui/ui_cardspills.anm2'
+end
+
 -- there's no standard api for adding pill colors
 mod.pillColors = {
-                   [PillColor.PILL_BLUE_BLUE]        = 'Blue-Blue',      -- 1
-                   [PillColor.PILL_WHITE_BLUE]       = 'White-Blue',     -- 2
-                   [PillColor.PILL_ORANGE_ORANGE]    = 'Orange-Orange',  -- 3
-                   [PillColor.PILL_WHITE_WHITE]      = 'White-White',    -- 4
-                   [PillColor.PILL_REDDOTS_RED]      = 'Dots-Red',       -- 5
-                   [PillColor.PILL_PINK_RED]         = 'Pink-Red',       -- 6
-                   [PillColor.PILL_BLUE_CADETBLUE]   = 'Blue-Cadetblue', -- 7
-                   [PillColor.PILL_YELLOW_ORANGE]    = 'Yellow-Orange',  -- 8
-                   [PillColor.PILL_ORANGEDOTS_WHITE] = 'Dots-White',     -- 9
-                   [PillColor.PILL_WHITE_AZURE]      = 'White-Azure',    -- 10
-                   [PillColor.PILL_BLACK_YELLOW]     = 'Black-Yellow',   -- 11
-                   [PillColor.PILL_WHITE_BLACK]      = 'White-Black',    -- 12
-                   [PillColor.PILL_WHITE_YELLOW]     = 'White-Yellow'    -- 13
+                   [PillColor.PILL_BLUE_BLUE]        = { -- 1
+                                                         name      = 'Blue-Blue',
+                                                         anm2Std   = 'gfx/005.071_pill blue-blue.anm2',
+                                                         anm2Horse = 'gfx/005.071_horse pill blue-blue.anm2'
+                                                       },
+                   [PillColor.PILL_WHITE_BLUE]       = { -- 2
+                                                         name      = 'White-Blue',
+                                                         anm2Std   = 'gfx/005.072_pill white-blue.anm2',
+                                                         anm2Horse = 'gfx/005.072_horse pill white-blue.anm2'
+                                                       },
+                   [PillColor.PILL_ORANGE_ORANGE]    = { -- 3
+                                                         name      = 'Orange-Orange',
+                                                         anm2Std   = 'gfx/005.073_pill orange-orange.anm2',
+                                                         anm2Horse = 'gfx/005.073_horse pill orange-orange.anm2'
+                                                       },
+                   [PillColor.PILL_WHITE_WHITE]      = { -- 4
+                                                         name      = 'White-White',
+                                                         anm2Std   = 'gfx/005.074_pill white-white.anm2',
+                                                         anm2Horse = 'gfx/005.074_horse pill white-white.anm2'
+                                                       },
+                   [PillColor.PILL_REDDOTS_RED]      = { -- 5
+                                                         name      = 'Dots-Red',
+                                                         anm2Std   = 'gfx/005.075_pill dots-red.anm2',
+                                                         anm2Horse = 'gfx/005.075_horse pill dots-red.anm2'
+                                                       },
+                   [PillColor.PILL_PINK_RED]         = { -- 6
+                                                         name      = 'Pink-Red',
+                                                         anm2Std   = 'gfx/005.076_pill pink-red.anm2',
+                                                         anm2Horse = 'gfx/005.076_horse pill pink-red.anm2'
+                                                       },
+                   [PillColor.PILL_BLUE_CADETBLUE]   = { -- 7
+                                                         name      = 'Blue-Cadetblue',
+                                                         anm2Std   = 'gfx/005.077_pill blue-cadetblue.anm2',
+                                                         anm2Horse = 'gfx/005.077_horse pill blue-cadetblue.anm2'
+                                                       },
+                   [PillColor.PILL_YELLOW_ORANGE]    = { -- 8
+                                                         name      = 'Yellow-Orange',
+                                                         anm2Std   = 'gfx/005.078_pill yellow-orange.anm2',
+                                                         anm2Horse = 'gfx/005.078_horse pill yellow-orange.anm2'
+                                                       },
+                   [PillColor.PILL_ORANGEDOTS_WHITE] = { -- 9
+                                                         name      = 'Dots-White',
+                                                         anm2Std   = 'gfx/005.079_pill dots-white.anm2',
+                                                         anm2Horse = 'gfx/005.079_horse pill dots-white.anm2'
+                                                       },
+                   [PillColor.PILL_WHITE_AZURE]      = { -- 10
+                                                         name      = 'White-Azure',
+                                                         anm2Std   = 'gfx/005.080_pill white-azure.anm2',
+                                                         anm2Horse = 'gfx/005.080_horse pill white-azure.anm2'
+                                                       },
+                   [PillColor.PILL_BLACK_YELLOW]     = { -- 11
+                                                         name      = 'Black-Yellow',
+                                                         anm2Std   = 'gfx/005.081_pill black-yellow.anm2',
+                                                         anm2Horse = 'gfx/005.081_horse pill black-yellow.anm2'
+                                                       },
+                   [PillColor.PILL_WHITE_BLACK]      = { -- 12
+                                                         name      = 'White-Black',
+                                                         anm2Std   = 'gfx/005.082_pill white-black.anm2',
+                                                         anm2Horse = 'gfx/005.082_horse pill white-black.anm2'
+                                                       },
+                   [PillColor.PILL_WHITE_YELLOW]     = { -- 13
+                                                         name      = 'White-Yellow',
+                                                         anm2Std   = 'gfx/005.083_pill white-yellow.anm2',
+                                                         anm2Horse = 'gfx/005.083_horse pill white-yellow.anm2'
+                                                       }
                  }
 if REPENTANCE then
-  mod.pillColors[PillColor.PILL_GOLD] = 'Gold-Gold' -- 14
+  mod.pillColors[PillColor.PILL_GOLD] = { -- 14
+                                          name      = 'Gold-Gold',
+                                          anm2Std   = 'gfx/005.084_pill gold-gold.anm2',
+                                          anm2Horse = 'gfx/005.084_horse pill gold-gold.anm2'
+                                        }
 end
 
 mod.pillEffects = {
@@ -372,6 +438,70 @@ function mod:getPillEffect(pillEffect, pillColor)
   return pillEffect
 end
 
+function mod:onRenderMenu()
+  if mod.renderPillColor == PillColor.PILL_NULL or ScreenHelper == nil then
+    return
+  end
+  
+  local pos = ScreenHelper.GetScreenCenter() + Vector(68, -18) -- copied from mcm
+  
+  if REPENTANCE then
+    local anm2Std = mod.pillColors[mod.renderPillColor].anm2Std
+    local anm2Horse = mod.pillColors[mod.renderPillColor].anm2Horse
+    
+    if mod.spriteStdIdle:GetFilename() ~= anm2Std then
+      mod.spriteStdIdle:Load(anm2Std, true)
+      mod.spriteStdIdle:Play('Idle', true)
+    end
+    if mod.spriteStdHUD:GetFilename() ~= anm2Std then
+      mod.spriteStdHUD:Load(anm2Std, true)
+      mod.spriteStdHUD:Play('HUD', true)
+    end
+    if mod.spriteHorseIdle:GetFilename() ~= anm2Horse then
+      mod.spriteHorseIdle:Load(anm2Horse, true)
+      mod.spriteHorseIdle:Play('Idle', true)
+    end
+    if mod.spriteHorseHUD:GetFilename() ~= anm2Horse then
+      mod.spriteHorseHUD:Load(anm2Horse, true)
+      mod.spriteHorseHUD:Play('HUD', true)
+    end
+    
+    mod.spriteStdIdle:Render(pos + Vector(-108, -28), Vector.Zero, Vector.Zero)
+    mod.spriteStdHUD:Render(pos + Vector(-108, -3), Vector.Zero, Vector.Zero)
+    mod.spriteHorseIdle:Render(pos + Vector(-83, -28), Vector.Zero, Vector.Zero)
+    mod.spriteHorseHUD:Render(pos + Vector(-83, -3), Vector.Zero, Vector.Zero)
+    
+    if Isaac.GetFrameCount() % 2 == 0 then -- 60fps -> 30fps
+      mod.spriteStdIdle:Update()
+      mod.spriteStdHUD:Update()
+      mod.spriteHorseIdle:Update()
+      mod.spriteHorseHUD:Update()
+    end
+  else
+    local anm2Std = mod.pillColors[mod.renderPillColor].anm2Std
+    
+    if mod.spriteStdIdle:GetFilename() ~= anm2Std then
+      mod.spriteStdIdle:Load(anm2Std, true)
+      mod.spriteStdIdle:Play('Idle', true)
+    end
+    if mod.spriteStdHUD:GetFilename() ~= mod.anm2CardsPills then
+      mod.spriteStdHUD:Load(mod.anm2CardsPills, true)
+      mod.spriteStdHUD:SetFrame('Pills', mod.renderPillColor - 1)
+    elseif mod.spriteStdHUD:GetFrame() ~= mod.renderPillColor - 1 then
+      mod.spriteStdHUD:SetFrame('Pills', mod.renderPillColor - 1)
+    end
+    
+    mod.spriteStdIdle:Render(pos + Vector(-98, -28), Vector(0,0), Vector(0,0))
+    mod.spriteStdHUD:Render(pos + Vector(-98, -3), Vector(0,0), Vector(0,0))
+    
+    if Isaac.GetFrameCount() % 2 == 0 then
+      mod.spriteStdIdle:Update()
+    end
+  end
+  
+  mod.renderPillColor = PillColor.PILL_NULL
+end
+
 -- 0-49 are defined in repentance
 -- 50 and beyond can be created by mods, it doesn't appear that you can set IDs via the xml so everything should be sequential
 function mod:fillPillEffects()
@@ -399,9 +529,9 @@ function mod:fillPillEffects()
 end
 
 function mod:getPillColorName(color)
-  local name = mod.pillColors[color]
-  if name then
-    return name
+  local tbl = mod.pillColors[color]
+  if tbl then
+    return tbl.name
   end
   
   return tostring(color)
@@ -834,7 +964,10 @@ function mod:setupModConfigMenu()
           mod.state.pillColors[tostring(i)].weightStd = n
           mod:save()
         end,
-        Info = { 'Choose relative weights for random pills' }
+        Info = function()
+          mod.renderPillColor = i
+          return { 'Choose relative weights for random pills' }
+        end
       }
     )
     if REPENTANCE then
@@ -853,7 +986,10 @@ function mod:setupModConfigMenu()
             mod.state.pillColors[tostring(i)].weightHorse = n
             mod:save()
           end,
-          Info = { 'Choose relative weights for random pills' }
+          Info = function()
+            mod.renderPillColor = i
+            return { 'Choose relative weights for random pills' }
+          end
         }
       )
     end
@@ -957,7 +1093,10 @@ function mod:setupModConfigMenu()
             mod:save()
           end
         end,
-        Info = { 'Select a pill effect override' }
+        Info = function()
+          mod.renderPillColor = i
+          return { 'Select a pill effect override' }
+        end
       }
     )
   end
@@ -1060,7 +1199,10 @@ function mod:setupModConfigMenu()
         OnChange = function(b)
           mod:spawnPill(i, false)
         end,
-        Info = { 'Spawn a standard pill' }
+        Info = function()
+          mod.renderPillColor = i
+          return { 'Spawn a standard pill' }
+        end
       }
     )
     if REPENTANCE then
@@ -1078,7 +1220,10 @@ function mod:setupModConfigMenu()
           OnChange = function(b)
             mod:spawnPill(i, true)
           end,
-          Info = { 'Spawn a horse pill' }
+          Info = function()
+            mod.renderPillColor = i
+            return { 'Spawn a horse pill' }
+          end
         }
       )
     end
@@ -1122,7 +1267,10 @@ function mod:setupModConfigMenu()
         OnChange = function(b)
           -- nothing to do
         end,
-        Info = { 'Pill as it appears in the pill pool', '(including any overrides)' }
+        Info = function()
+          mod.renderPillColor = i
+          return { 'Pill as it appears in the pill pool', '(including any overrides)' }
+        end
       }
     )
   end
@@ -1136,3 +1284,6 @@ mod:AddCallback(ModCallbacks.MC_GET_PILL_COLOR, mod.getPillColor)
 mod:AddCallback(ModCallbacks.MC_GET_PILL_EFFECT, mod.getPillEffect)
 
 mod:setupModConfigMenu()
+if ModConfigMenu then
+  mod:AddCallback(ModCallbacks.MC_POST_RENDER, mod.onRenderMenu)
+end
