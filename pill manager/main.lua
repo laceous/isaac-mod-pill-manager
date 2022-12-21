@@ -212,7 +212,10 @@ if REPENTANCE then
 end
 
 mod.state = {}
+mod.state.stageSeeds = {} -- per stage
+mod.state.isGoldPillIdentified = false
 mod.state.identifyPills = false
+mod.state.identifyGoldPills = false
 mod.state.enableItemIntegration = false
 mod.state.shuffledAndHidden = false
 mod.state.startupEffects = {
@@ -304,6 +307,12 @@ if REPENTANCE then
 end
 
 function mod:onGameStart(isContinue)
+  local level = game:GetLevel()
+  local stage = level:GetStage()
+  local seeds = game:GetSeeds()
+  local stageSeed = seeds:GetStageSeed(stage)
+  mod:setStageSeed(stageSeed)
+  
   mod:fillPillEffects()
   mod:setupModConfigMenu()
   
@@ -311,8 +320,24 @@ function mod:onGameStart(isContinue)
     local _, state = pcall(json.decode, mod:LoadData())
     
     if type(state) == 'table' then
+      if isContinue and type(state.stageSeeds) == 'table' then
+        -- quick check to see if this is the same run being continued
+        if state.stageSeeds[tostring(stage)] == stageSeed then
+          for key, value in pairs(state.stageSeeds) do
+            if type(key) == 'string' and math.type(value) == 'integer' then
+              mod.state.stageSeeds[key] = value
+            end
+          end
+        end
+        if type(state.isGoldPillIdentified) == 'boolean' then
+          mod.state.isGoldPillIdentified = state.isGoldPillIdentified
+        end
+      end
       if type(state.identifyPills) == 'boolean' then
         mod.state.identifyPills = state.identifyPills
+      end
+      if type(state.identifyGoldPills) == 'boolean' then
+        mod.state.identifyGoldPills = state.identifyGoldPills
       end
       if type(state.enableItemIntegration) == 'boolean' then
         mod.state.enableItemIntegration = state.enableItemIntegration
@@ -336,7 +361,7 @@ function mod:onGameStart(isContinue)
             if math.type(v.weightStd) == 'integer' and v.weightStd >= 0 and v.weightStd <= 11 then
               mod.state.pillColors[k].weightStd = v.weightStd
             end
-            if REPENTANCE and math.type(v.weightHorse) == 'integer' and v.weightHorse >= 0 and v.weightHorse <= 11 then
+            if math.type(v.weightHorse) == 'integer' and v.weightHorse >= 0 and v.weightHorse <= 11 then
               mod.state.pillColors[k].weightHorse = v.weightHorse
             end
           end
@@ -352,22 +377,6 @@ function mod:onGameStart(isContinue)
     end
   end
   
-  for i = 1, #mod.state.startupEffects do
-    if mod.state.startupEffects[i] < PillEffect.PILLEFFECT_NULL or mod.state.startupEffects[i] > mod.pillEffectsMax then
-      mod.state.startupEffects[i] = PillEffect.PILLEFFECT_NULL
-    end
-  end
-  for _, v in pairs(mod.state.pillColors) do
-    if v.effect < PillEffect.PILLEFFECT_NULL or v.effect > mod.pillEffectsMax then
-      v.effect = PillEffect.PILLEFFECT_NULL
-    end
-  end
-  for k, v in pairs(mod.state.pillEffects) do
-    if v < PillEffect.PILLEFFECT_NULL or v > mod.pillEffectsMax then
-      mod.state.pillEffects[k] = PillEffect.PILLEFFECT_NULL
-    end
-  end
-  
   if not isContinue then
     mod:setStartupEffects()
     
@@ -377,13 +386,67 @@ function mod:onGameStart(isContinue)
   end
 end
 
-function mod:onGameExit()
-  mod:save()
-  mod:seedRng()
+function mod:onGameExit(shouldSave)
+  if shouldSave then
+    mod:save()
+    mod:clearStageSeeds()
+    mod.state.isGoldPillIdentified = false
+  else
+    mod.state.isGoldPillIdentified = false
+    mod:clearStageSeeds()
+    mod:save()
+  end
   
+  mod:seedRng()
   mod.showUnidentifiedPills = false
   mod.forcedPillPoolColor = PillColor.PILL_NULL
   mod.forcedPillPoolTime = 0
+end
+
+function mod:save(settingsOnly)
+  if settingsOnly then
+    local _, state
+    if mod:HasData() then
+      _, state = pcall(json.decode, mod:LoadData())
+    end
+    if type(state) ~= 'table' then
+      state = {}
+    end
+    
+    state.identifyPills = mod.state.identifyPills
+    state.identifyGoldPills = mod.state.identifyGoldPills
+    state.enableItemIntegration = mod.state.enableItemIntegration
+    state.shuffledAndHidden = mod.state.shuffledAndHidden
+    state.startupEffects = mod.state.startupEffects
+    state.pillColors = mod.state.pillColors
+    state.pillEffects = mod.state.pillEffects
+    
+    mod:SaveData(json.encode(state))
+  else
+    mod:SaveData(json.encode(mod.state))
+  end
+end
+
+function mod:onNewLevel()
+  local level = game:GetLevel()
+  local seeds = game:GetSeeds()
+  local stageSeed = seeds:GetStageSeed(level:GetStage())
+  mod:setStageSeed(stageSeed)
+end
+
+function mod:onUpdate()
+  -- if gold pill was ever identified
+  if REPENTANCE and not mod.state.isGoldPillIdentified then
+    local itemPool = game:GetItemPool()
+    mod.state.isGoldPillIdentified = itemPool:IsPillIdentified(PillColor.PILL_GOLD)
+  end
+end
+
+-- doesn't pass pill color, assume gold pill
+function mod:onUsePill()
+  if REPENTANCE and mod.state.identifyGoldPills then
+    mod:identifyGoldPillsAgain()
+  end
 end
 
 function mod:getPillColor(seed)
@@ -688,14 +751,28 @@ function mod:identifyPills()
   end
 end
 
+function mod:identifyGoldPillsAgain()
+  if mod.state.isGoldPillIdentified then
+    local itemPool = game:GetItemPool()
+    itemPool:IdentifyPill(PillColor.PILL_GOLD)
+  end
+end
+
 function mod:spawnPill(color, isHorse)
   local player = game:GetPlayer(0)
   local pill = (color ~= PillColor.PILL_NULL and isHorse) and PillColor.PILL_GIANT_FLAG + color or color
   Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_PILL, pill, Isaac.GetFreeNearPosition(player.Position, 3), Vector(0,0), nil)
 end
 
-function mod:save()
-  mod:SaveData(json.encode(mod.state))
+function mod:setStageSeed(seed)
+  local level = game:GetLevel()
+  mod.state.stageSeeds[tostring(level:GetStage())] = seed
+end
+
+function mod:clearStageSeeds()
+  for key, _ in pairs(mod.state.stageSeeds) do
+    mod.state.stageSeeds[key] = nil
+  end
 end
 
 function mod:tableHasValue(tbl, val)
@@ -742,11 +819,34 @@ function mod:setupModConfigMenu()
         if b then
           mod:identifyPills()
         end
-        mod:save()
+        mod:save(true)
       end,
       Info = { 'Note: you can\'t de-identify pills', 'during the current run' }
     }
   )
+  if REPENTANCE then
+    ModConfigMenu.AddSetting(
+      mod.Name,
+      'General',
+      {
+        Type = ModConfigMenu.OptionType.BOOLEAN,
+        CurrentSetting = function()
+          return mod.state.identifyGoldPills
+        end,
+        Display = function()
+          return (mod.state.identifyGoldPills and 'Identify all gold pill effects' or 'Identify the 1st gold pill effect')
+        end,
+        OnChange = function(b)
+          mod.state.identifyGoldPills = b
+          if b then
+            mod:identifyGoldPillsAgain()
+          end
+          mod:save(true)
+        end,
+        Info = { 'If gold pills are identified:', 'Show the first pill effect only (default)', '-or- Show all pill effects' }
+      }
+    )
+  end
   ModConfigMenu.AddSetting(
     mod.Name,
     'General',
@@ -760,7 +860,7 @@ function mod:setupModConfigMenu()
       end,
       OnChange = function(b)
         mod.state.enableItemIntegration = b
-        mod:save()
+        mod:save(true)
       end,
       Info = { 'Single player only / For overriden effects', 'Items: ' .. (REPENTANCE and 'phd, lucky foot, virgo, false phd' or 'phd, virgo'), '(+low health)' }
     }
@@ -834,7 +934,7 @@ function mod:setupModConfigMenu()
         for i = 1, #mod.state.startupEffects do
           mod.state.startupEffects[i] = PillEffect.PILLEFFECT_NULL
         end
-        mod:save()
+        mod:save(true)
       end,
       Info = { 'Reset all startup effects' }
     }
@@ -854,7 +954,7 @@ function mod:setupModConfigMenu()
         for i = 1, #mod.state.startupEffects do
           mod.state.startupEffects[i] = mod.rng:RandomInt(mod.pillEffectsMax + 1)
         end
-        mod:save()
+        mod:save(true)
       end,
       Info = { 'Randomize all startup effects' }
     }
@@ -876,7 +976,7 @@ function mod:setupModConfigMenu()
         end,
         OnChange = function(n)
           mod.state.startupEffects[i] = n
-          mod:save()
+          mod:save(true)
         end,
         Info = { 'Select a startup pill effect' }
       }
@@ -917,7 +1017,7 @@ function mod:setupModConfigMenu()
           if REPENTANCE then
             v.weightHorse = 0
           end
-          mod:save()
+          mod:save(true)
         end
       end,
       Info = { 'Reset all colors to zero' }
@@ -940,7 +1040,7 @@ function mod:setupModConfigMenu()
           if REPENTANCE then
             v.weightHorse = mod.rng:RandomInt(11)
           end
-          mod:save()
+          mod:save(true)
         end
       end,
       Info = { 'Randomize all colors' }
@@ -962,7 +1062,7 @@ function mod:setupModConfigMenu()
         end,
         OnChange = function(n)
           mod.state.pillColors[tostring(i)].weightStd = n
-          mod:save()
+          mod:save(true)
         end,
         Info = function()
           mod.renderPillColor = i
@@ -984,7 +1084,7 @@ function mod:setupModConfigMenu()
           end,
           OnChange = function(n)
             mod.state.pillColors[tostring(i)].weightHorse = n
-            mod:save()
+            mod:save(true)
           end,
           Info = function()
             mod.renderPillColor = i
@@ -1010,7 +1110,7 @@ function mod:setupModConfigMenu()
           for _, v in pairs(mod.state.pillColors) do
             v.effect = PillEffect.PILLEFFECT_NULL
           end
-          mod:save()
+          mod:save(true)
         end
       end,
       Info = { 'Reset all effect overrides' }
@@ -1032,7 +1132,7 @@ function mod:setupModConfigMenu()
           for _, v in pairs(mod.state.pillColors) do
             v.effect = mod.rng:RandomInt(mod.pillEffectsMax + 1)
           end
-          mod:save()
+          mod:save(true)
         end
       end,
       Info = { 'Randomize all effect overrides' }
@@ -1066,7 +1166,7 @@ function mod:setupModConfigMenu()
           end
         end
         
-        mod:save()
+        mod:save(true)
       end,
       Info = { 'Shuffle all overriden effects', '& hide the results' }
     }
@@ -1090,7 +1190,7 @@ function mod:setupModConfigMenu()
         OnChange = function(n)
           if not mod.state.shuffledAndHidden then
             mod.state.pillColors[tostring(i)].effect = n
-            mod:save()
+            mod:save(true)
           end
         end,
         Info = function()
@@ -1115,7 +1215,7 @@ function mod:setupModConfigMenu()
         for k, _ in pairs(mod.state.pillEffects) do
           mod.state.pillEffects[k] = PillEffect.PILLEFFECT_NULL
         end
-        mod:save()
+        mod:save(true)
       end,
       Info = { 'Reset all effect overrides' }
     }
@@ -1135,7 +1235,7 @@ function mod:setupModConfigMenu()
         for k, _ in pairs(mod.state.pillEffects) do
           mod.state.pillEffects[k] = mod.rng:RandomInt(mod.pillEffectsMax + 1)
         end
-        mod:save()
+        mod:save(true)
       end,
       Info = { 'Randomize all effect overrides' }
     }
@@ -1158,7 +1258,7 @@ function mod:setupModConfigMenu()
         end,
         OnChange = function(n)
           mod.state.pillEffects[tostring(i)] = n
-          mod:save()
+          mod:save(true)
         end,
         Info = { 'Select a pill effect override' }
       }
@@ -1280,6 +1380,9 @@ end
 mod:seedRng()
 mod:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, mod.onGameStart)
 mod:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, mod.onGameExit)
+mod:AddCallback(ModCallbacks.MC_POST_NEW_LEVEL, mod.onNewLevel)
+mod:AddCallback(ModCallbacks.MC_POST_UPDATE, mod.onUpdate)
+mod:AddCallback(ModCallbacks.MC_USE_PILL, mod.onUsePill)
 mod:AddCallback(ModCallbacks.MC_GET_PILL_COLOR, mod.getPillColor)
 mod:AddCallback(ModCallbacks.MC_GET_PILL_EFFECT, mod.getPillEffect)
 

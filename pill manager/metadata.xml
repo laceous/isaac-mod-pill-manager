@@ -21,7 +21,8 @@ Modded pill effects are supported.
 
 There's options to:
 [list]
-    [*]Identiy pills in-game before use
+    [*]Identify pills in-game before use
+    [*]Identify all gold pills instead of just the first one
     [*]Enable single player item integration for overridden pill effects
     [*]Force individual pill effects into the pill pool
 [/list]
@@ -63,7 +64,7 @@ Spawn random/specific/horse pills directly from the menu.
 [b][u]Info[/u][/b]
 
 View the current pill pool (including any overrides).</description>
-    <version>1.12</version>
+    <version>1.13</version>
     <visibility>Public</visibility>
     <tag id="Lua"/>
     <tag id="Pills"/>
