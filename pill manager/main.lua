@@ -212,7 +212,6 @@ if REPENTANCE then
 end
 
 mod.state = {}
-mod.state.stageSeeds = {} -- per stage
 mod.state.isGoldPillIdentified = false
 mod.state.identifyPills = false
 mod.state.identifyGoldPills = false
@@ -307,12 +306,6 @@ if REPENTANCE then
 end
 
 function mod:onGameStart(isContinue)
-  local level = game:GetLevel()
-  local stage = level:GetStage()
-  local seeds = game:GetSeeds()
-  local stageSeed = seeds:GetStageSeed(stage)
-  mod:setStageSeed(stageSeed)
-  
   mod:fillPillEffects()
   mod:setupModConfigMenu()
   
@@ -320,15 +313,7 @@ function mod:onGameStart(isContinue)
     local _, state = pcall(json.decode, mod:LoadData())
     
     if type(state) == 'table' then
-      if isContinue and type(state.stageSeeds) == 'table' then
-        -- quick check to see if this is the same run being continued
-        if state.stageSeeds[tostring(stage)] == stageSeed then
-          for key, value in pairs(state.stageSeeds) do
-            if type(key) == 'string' and math.type(value) == 'integer' then
-              mod.state.stageSeeds[key] = value
-            end
-          end
-        end
+      if isContinue then
         if type(state.isGoldPillIdentified) == 'boolean' then
           mod.state.isGoldPillIdentified = state.isGoldPillIdentified
         end
@@ -389,11 +374,9 @@ end
 function mod:onGameExit(shouldSave)
   if shouldSave then
     mod:save()
-    mod:clearStageSeeds()
     mod.state.isGoldPillIdentified = false
   else
     mod.state.isGoldPillIdentified = false
-    mod:clearStageSeeds()
     mod:save()
   end
   
@@ -425,13 +408,6 @@ function mod:save(settingsOnly)
   else
     mod:SaveData(json.encode(mod.state))
   end
-end
-
-function mod:onNewLevel()
-  local level = game:GetLevel()
-  local seeds = game:GetSeeds()
-  local stageSeed = seeds:GetStageSeed(level:GetStage())
-  mod:setStageSeed(stageSeed)
 end
 
 function mod:onUpdate()
@@ -762,17 +738,6 @@ function mod:spawnPill(color, isHorse)
   local player = game:GetPlayer(0)
   local pill = (color ~= PillColor.PILL_NULL and isHorse) and PillColor.PILL_GIANT_FLAG + color or color
   Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_PILL, pill, Isaac.GetFreeNearPosition(player.Position, 3), Vector(0,0), nil)
-end
-
-function mod:setStageSeed(seed)
-  local level = game:GetLevel()
-  mod.state.stageSeeds[tostring(level:GetStage())] = seed
-end
-
-function mod:clearStageSeeds()
-  for key, _ in pairs(mod.state.stageSeeds) do
-    mod.state.stageSeeds[key] = nil
-  end
 end
 
 function mod:tableHasValue(tbl, val)
@@ -1380,7 +1345,6 @@ end
 mod:seedRng()
 mod:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, mod.onGameStart)
 mod:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, mod.onGameExit)
-mod:AddCallback(ModCallbacks.MC_POST_NEW_LEVEL, mod.onNewLevel)
 mod:AddCallback(ModCallbacks.MC_POST_UPDATE, mod.onUpdate)
 mod:AddCallback(ModCallbacks.MC_USE_PILL, mod.onUsePill)
 mod:AddCallback(ModCallbacks.MC_GET_PILL_COLOR, mod.getPillColor)
