@@ -543,7 +543,7 @@ function mod:onRenderMenu()
 end
 
 function mod:getFiendFolioAnm2(pillColor, anm2Std, anm2Horse)
-  if not StageAPI or not StageAPI.Loaded or not FiendFolio then
+  if not REPENTANCE or not StageAPI or not StageAPI.Loaded or not FiendFolio then
     return anm2Std, anm2Horse
   end
   
@@ -748,7 +748,7 @@ function mod:isPillIdentified(pillColor)
     return true
   end
   
-  if FiendFolio then
+  if REPENTANCE and FiendFolio then
     local ffPillColor = FiendFolio.savedata.run.PillBeingReplaced[tostring(pillColor)]
     if ffPillColor then
       return FiendFolio.savedata.run.IdentifiedRunPills[tostring(ffPillColor)] or false
