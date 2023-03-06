@@ -413,8 +413,7 @@ end
 function mod:onUpdate()
   -- if gold pill was ever identified
   if REPENTANCE and not mod.state.isGoldPillIdentified then
-    local itemPool = game:GetItemPool()
-    mod.state.isGoldPillIdentified = itemPool:IsPillIdentified(PillColor.PILL_GOLD)
+    mod.state.isGoldPillIdentified = mod:isPillIdentified(PillColor.PILL_GOLD)
   end
 end
 
@@ -488,6 +487,8 @@ function mod:onRenderMenu()
     local anm2Std = mod.pillColors[mod.renderPillColor].anm2Std
     local anm2Horse = mod.pillColors[mod.renderPillColor].anm2Horse
     
+    anm2Std, anm2Horse = mod:getFiendFolioAnm2(mod.renderPillColor, anm2Std, anm2Horse)
+    
     if mod.spriteStdIdle:GetFilename() ~= anm2Std then
       mod.spriteStdIdle:Load(anm2Std, true)
       mod.spriteStdIdle:Play('Idle', true)
@@ -539,6 +540,27 @@ function mod:onRenderMenu()
   end
   
   mod.renderPillColor = PillColor.PILL_NULL
+end
+
+function mod:getFiendFolioAnm2(pillColor, anm2Std, anm2Horse)
+  if not StageAPI or not StageAPI.Loaded or not FiendFolio then
+    return anm2Std, anm2Horse
+  end
+  
+  local ffPillColor = FiendFolio.savedata.run.PillBeingReplaced[tostring(pillColor)]
+  
+  if ffPillColor then
+    local configStd = StageAPI.GetEntityConfig(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_PILL, ffPillColor)
+    if configStd and configStd.Anm2 then
+      anm2Std = 'gfx/' .. configStd.Anm2
+    end
+    local configHorse = StageAPI.GetEntityConfig(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_PILL, ffPillColor + PillColor.PILL_GIANT_FLAG)
+    if configHorse and configHorse.Anm2 then
+      anm2Horse = 'gfx/' .. configHorse.Anm2
+    end
+  end
+  
+  return anm2Std, anm2Horse
 end
 
 -- 0-49 are defined in repentance
@@ -720,6 +742,22 @@ function mod:setStartupEffects()
   until(done)
 end
 
+function mod:isPillIdentified(pillColor)
+  local itemPool = game:GetItemPool()
+  if itemPool:IsPillIdentified(pillColor) then
+    return true
+  end
+  
+  if FiendFolio then
+    local ffPillColor = FiendFolio.savedata.run.PillBeingReplaced[tostring(pillColor)]
+    if ffPillColor then
+      return FiendFolio.savedata.run.IdentifiedRunPills[tostring(ffPillColor)] or false
+    end
+  end
+  
+  return false
+end
+
 function mod:identifyPills()
   local itemPool = game:GetItemPool()
   for color, _ in pairs(mod.pillColors) do
@@ -799,7 +837,7 @@ function mod:setupModConfigMenu()
           return mod.state.identifyGoldPills
         end,
         Display = function()
-          return (mod.state.identifyGoldPills and 'Identify all gold pill effects' or 'Identify the 1st gold pill effect')
+          return (mod.state.identifyGoldPills and 'Identify all gold pill effects' or 'Identify 1st gold pill effect')
         end,
         OnChange = function(b)
           mod.state.identifyGoldPills = b
@@ -878,8 +916,7 @@ function mod:setupModConfigMenu()
     
     local forcedPillPoolText = ''
     if mod.forcedPillPoolColor ~= PillColor.PILL_NULL then
-      local itemPool = game:GetItemPool()
-      forcedPillPoolText = 'Assigned to: ' .. ((mod.showUnidentifiedPills or itemPool:IsPillIdentified(mod.forcedPillPoolColor)) and mod:getPillColorName(mod.forcedPillPoolColor) or 'unidentified')
+      forcedPillPoolText = 'Assigned to: ' .. ((mod.showUnidentifiedPills or mod:isPillIdentified(mod.forcedPillPoolColor)) and mod:getPillColorName(mod.forcedPillPoolColor) or 'unidentified')
     end
     
     return forcedPillPoolText
@@ -1323,7 +1360,7 @@ function mod:setupModConfigMenu()
         end,
         Display = function()
           local itemPool = game:GetItemPool()
-          if mod.showUnidentifiedPills or itemPool:IsPillIdentified(i) then
+          if mod.showUnidentifiedPills or mod:isPillIdentified(i) then
             return mod:getPillEffectName(itemPool:GetPillEffect(i, nil))
           end
           
@@ -1350,7 +1387,7 @@ mod:AddCallback(ModCallbacks.MC_USE_PILL, mod.onUsePill)
 mod:AddCallback(ModCallbacks.MC_GET_PILL_COLOR, mod.getPillColor)
 mod:AddCallback(ModCallbacks.MC_GET_PILL_EFFECT, mod.getPillEffect)
 
-mod:setupModConfigMenu()
 if ModConfigMenu then
+  mod:setupModConfigMenu()
   mod:AddCallback(ModCallbacks.MC_POST_RENDER, mod.onRenderMenu)
 end
