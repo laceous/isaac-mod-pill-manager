@@ -473,7 +473,7 @@ function mod:getPillEffect(pillEffect, pillColor)
     return effectOverride
   end
   
-  return pillEffect
+  return nil
 end
 
 function mod:onRenderMenu()
@@ -563,6 +563,26 @@ function mod:getFiendFolioAnm2(pillColor, anm2Std, anm2Horse)
   return anm2Std, anm2Horse
 end
 
+function mod:getFiendFolioName(pillColor)
+  if not REPENTANCE or not StageAPI or not StageAPI.Loaded or not FiendFolio or not FiendFolio.savedata or not FiendFolio.savedata.run then
+    return nil
+  end
+  
+  local ffPillColor = FiendFolio.savedata.run.PillBeingReplaced[tostring(pillColor)]
+  
+  if ffPillColor then
+    local config = StageAPI.GetEntityConfig(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_PILL, ffPillColor)
+    if config and config.Name then
+      local name = config.Name -- Pill Black-Purple
+      if string.len(name) >= 6 and string.sub(name, 1, 5) == 'Pill ' then
+        return string.sub(name, 6) -- Black-Purple
+      end
+    end
+  end
+  
+  return nil
+end
+
 -- 0-49 are defined in repentance
 -- 50 and beyond can be created by mods, it doesn't appear that you can set IDs via the xml so everything should be sequential
 function mod:fillPillEffects()
@@ -589,8 +609,19 @@ function mod:fillPillEffects()
   end
 end
 
-function mod:getPillColorName(color)
+function mod:getPillColorName(color, origOnly)
   local tbl = mod.pillColors[color]
+  if tbl and origOnly then
+    return tbl.name
+  end
+  
+  if not origOnly then
+    local ffName = mod:getFiendFolioName(color)
+    if ffName then
+      return ffName
+    end
+  end
+  
   if tbl then
     return tbl.name
   end
@@ -916,7 +947,7 @@ function mod:setupModConfigMenu()
     
     local forcedPillPoolText = ''
     if mod.forcedPillPoolColor ~= PillColor.PILL_NULL then
-      forcedPillPoolText = 'Assigned to: ' .. ((mod.showUnidentifiedPills or mod:isPillIdentified(mod.forcedPillPoolColor)) and mod:getPillColorName(mod.forcedPillPoolColor) or 'unidentified')
+      forcedPillPoolText = 'Assigned to: ' .. ((mod.showUnidentifiedPills or mod:isPillIdentified(mod.forcedPillPoolColor)) and mod:getPillColorName(mod.forcedPillPoolColor, true) or 'unidentified')
     end
     
     return forcedPillPoolText
@@ -1050,7 +1081,12 @@ function mod:setupModConfigMenu()
   )
   for i = PillColor.PILL_NULL + 1, PillColor.NUM_PILLS - 1 do
     ModConfigMenu.AddSpace(mod.Name, 'Colors')
-    ModConfigMenu.AddTitle(mod.Name, 'Colors', mod:getPillColorName(i))
+    local pillColorName = mod:getPillColorName(i)
+    local pillColorNameOrig = mod:getPillColorName(i, true)
+    ModConfigMenu.AddTitle(mod.Name, 'Colors', pillColorNameOrig)
+    if pillColorName ~= pillColorNameOrig then
+      ModConfigMenu.AddText(mod.Name, 'Colors', '(' .. pillColorName .. ')')
+    end
     ModConfigMenu.AddSetting(
       mod.Name,
       'Colors',
@@ -1175,7 +1211,12 @@ function mod:setupModConfigMenu()
   )
   for i = PillColor.PILL_NULL + 1, PillColor.NUM_PILLS - 1 do
     ModConfigMenu.AddSpace(mod.Name, 'Effects 1')
-    ModConfigMenu.AddTitle(mod.Name, 'Effects 1', mod:getPillColorName(i))
+    local pillColorName = mod:getPillColorName(i)
+    local pillColorNameOrig = mod:getPillColorName(i, true)
+    ModConfigMenu.AddTitle(mod.Name, 'Effects 1', pillColorNameOrig)
+    if pillColorName ~= pillColorNameOrig then
+      ModConfigMenu.AddText(mod.Name, 'Effects 1', '(' .. pillColorName .. ')')
+    end
     ModConfigMenu.AddSetting(
       mod.Name,
       'Effects 1',
@@ -1286,7 +1327,12 @@ function mod:setupModConfigMenu()
   )
   for i = PillColor.PILL_NULL + 1, PillColor.NUM_PILLS - 1 do
     ModConfigMenu.AddSpace(mod.Name, 'Spawn')
-    ModConfigMenu.AddTitle(mod.Name, 'Spawn', mod:getPillColorName(i))
+    local pillColorName = mod:getPillColorName(i)
+    local pillColorNameOrig = mod:getPillColorName(i, true)
+    ModConfigMenu.AddTitle(mod.Name, 'Spawn', pillColorNameOrig)
+    if pillColorName ~= pillColorNameOrig then
+      ModConfigMenu.AddText(mod.Name, 'Spawn', '(' .. pillColorName .. ')')
+    end
     ModConfigMenu.AddSetting(
       mod.Name,
       'Spawn',
@@ -1349,7 +1395,12 @@ function mod:setupModConfigMenu()
   )
   for i = PillColor.PILL_NULL + 1, PillColor.NUM_PILLS - 1 do
     ModConfigMenu.AddSpace(mod.Name, 'Info')
-    ModConfigMenu.AddTitle(mod.Name, 'Info', mod:getPillColorName(i))
+    local pillColorName = mod:getPillColorName(i)
+    local pillColorNameOrig = mod:getPillColorName(i, true)
+    ModConfigMenu.AddTitle(mod.Name, 'Info', pillColorNameOrig)
+    if pillColorName ~= pillColorNameOrig then
+      ModConfigMenu.AddText(mod.Name, 'Info', '(' .. pillColorName .. ')')
+    end
     ModConfigMenu.AddSetting(
       mod.Name,
       'Info',
