@@ -425,6 +425,10 @@ function mod:onUsePill()
 end
 
 function mod:getPillColor(seed)
+  local function sortColors(a, b)
+    return a.color < b.color
+  end
+  
   local weightedColors = {}
   local totalWeight = 0
   for k, v in pairs(mod.state.pillColors) do
@@ -437,6 +441,8 @@ function mod:getPillColor(seed)
       totalWeight = totalWeight + v.weightHorse
     end
   end
+  
+  table.sort(weightedColors, sortColors)
   
   if totalWeight > 0 then
     local rng = RNG()
