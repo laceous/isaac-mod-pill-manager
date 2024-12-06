@@ -64,7 +64,7 @@ Spawn random/specific/horse pills directly from the menu.
 [b][u]Info[/u][/b]
 
 View the current pill pool (including any overrides).</description>
-    <version>1.18</version>
+    <version>1.19</version>
     <visibility>Public</visibility>
     <tag id="Lua"/>
     <tag id="Pills"/>

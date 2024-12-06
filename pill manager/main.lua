@@ -12,7 +12,7 @@ mod.rngShiftIndex = 35
 mod.renderPillColor = PillColor.PILL_NULL
 mod.spriteStdIdle = Sprite()
 mod.spriteStdHUD = Sprite()
-if REPENTANCE then
+if REPENTANCE or REPENTANCE_PLUS then
   mod.spriteHorseIdle = Sprite()
   mod.spriteHorseHUD = Sprite()
 else
@@ -87,7 +87,7 @@ mod.pillColors = {
                                                          anm2Horse = 'gfx/005.083_horse pill white-yellow.anm2'
                                                        }
                  }
-if REPENTANCE then
+if REPENTANCE or REPENTANCE_PLUS then
   mod.pillColors[PillColor.PILL_GOLD] = { -- 14
                                           name      = 'Gold-Gold',
                                           anm2Std   = 'gfx/005.084_pill gold-gold.anm2',
@@ -171,14 +171,14 @@ mod.badToGoodPillEffects = {
                              [PillEffect.PILLEFFECT_X_LAX]        = PillEffect.PILLEFFECT_SOMETHINGS_WRONG,
                              [PillEffect.PILLEFFECT_BAD_TRIP]     = PillEffect.PILLEFFECT_FULL_HEALTH
                            }
-if REPENTANCE then
+if REPENTANCE or REPENTANCE_PLUS then
   mod.badToGoodPillEffects[PillEffect.PILLEFFECT_BAD_TRIP]        = PillEffect.PILLEFFECT_BALLS_OF_STEEL
   mod.badToGoodPillEffects[PillEffect.PILLEFFECT_SHOT_SPEED_DOWN] = PillEffect.PILLEFFECT_SHOT_SPEED_UP
 end
 
 -- false phd
 mod.goodToBadPillEffects = {}
-if REPENTANCE then
+if REPENTANCE or REPENTANCE_PLUS then
   mod.goodToBadPillEffects[PillEffect.PILLEFFECT_HEALTH_UP]            = PillEffect.PILLEFFECT_HEALTH_DOWN
   mod.goodToBadPillEffects[PillEffect.PILLEFFECT_RANGE_UP]             = PillEffect.PILLEFFECT_RANGE_DOWN
   mod.goodToBadPillEffects[PillEffect.PILLEFFECT_SPEED_UP]             = PillEffect.PILLEFFECT_SPEED_DOWN
@@ -247,7 +247,7 @@ mod.state.pillColors = {
                          [tostring(PillColor.PILL_WHITE_BLACK)]      = { effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 },
                          [tostring(PillColor.PILL_WHITE_YELLOW)]     = { effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 }
                        }
-if REPENTANCE then
+if REPENTANCE or REPENTANCE_PLUS then
   mod.state.pillColors[tostring(PillColor.PILL_GOLD)] = { effect = PillEffect.PILLEFFECT_NULL, weightStd = 0, weightHorse = 0 }
 end
 mod.state.pillEffects = { -- tostring because table to json is ambiguous (array/object)
@@ -299,7 +299,7 @@ mod.state.pillEffects = { -- tostring because table to json is ambiguous (array/
                           [tostring(PillEffect.PILLEFFECT_SUNSHINE)]             = PillEffect.PILLEFFECT_NULL,
                           [tostring(PillEffect.PILLEFFECT_VURP)]                 = PillEffect.PILLEFFECT_NULL
                         }
-if REPENTANCE then
+if REPENTANCE or REPENTANCE_PLUS then
   mod.state.pillEffects[tostring(PillEffect.PILLEFFECT_SHOT_SPEED_DOWN)] = PillEffect.PILLEFFECT_NULL
   mod.state.pillEffects[tostring(PillEffect.PILLEFFECT_SHOT_SPEED_UP)]   = PillEffect.PILLEFFECT_NULL
   mod.state.pillEffects[tostring(PillEffect.PILLEFFECT_EXPERIMENTAL)]    = PillEffect.PILLEFFECT_NULL
@@ -412,14 +412,14 @@ end
 
 function mod:onUpdate()
   -- if gold pill was ever identified
-  if REPENTANCE and not mod.state.isGoldPillIdentified then
+  if (REPENTANCE or REPENTANCE_PLUS) and not mod.state.isGoldPillIdentified then
     mod.state.isGoldPillIdentified = mod:isPillIdentified(PillColor.PILL_GOLD)
   end
 end
 
 -- doesn't pass pill color, assume gold pill
 function mod:onUsePill()
-  if REPENTANCE and mod.state.identifyGoldPills then
+  if (REPENTANCE or REPENTANCE_PLUS) and mod.state.identifyGoldPills then
     mod:identifyGoldPillsAgain()
   end
 end
@@ -436,7 +436,7 @@ function mod:getPillColor(seed)
       table.insert(weightedColors, { color = tonumber(k), weight = v.weightStd })
       totalWeight = totalWeight + v.weightStd
     end
-    if REPENTANCE and v.weightHorse > 0 then
+    if (REPENTANCE or REPENTANCE_PLUS) and v.weightHorse > 0 then
       table.insert(weightedColors, { color = PillColor.PILL_GIANT_FLAG + tonumber(k), weight = v.weightHorse })
       totalWeight = totalWeight + v.weightHorse
     end
@@ -489,7 +489,7 @@ function mod:onRenderMenu()
   
   local pos = ScreenHelper.GetScreenCenter() + Vector(68, -18) -- copied from mcm
   
-  if REPENTANCE then
+  if REPENTANCE or REPENTANCE_PLUS then
     local anm2Std = mod.pillColors[mod.renderPillColor].anm2Std
     local anm2Horse = mod.pillColors[mod.renderPillColor].anm2Horse
     
@@ -549,7 +549,7 @@ function mod:onRenderMenu()
 end
 
 function mod:getFiendFolioAnm2(pillColor, anm2Std, anm2Horse)
-  if not REPENTANCE or not StageAPI or not StageAPI.Loaded or not FiendFolio then
+  if not (REPENTANCE or REPENTANCE_PLUS) or not StageAPI or not StageAPI.Loaded or not FiendFolio then
     return anm2Std, anm2Horse
   end
   
@@ -570,7 +570,7 @@ function mod:getFiendFolioAnm2(pillColor, anm2Std, anm2Horse)
 end
 
 function mod:getFiendFolioName(pillColor)
-  if not REPENTANCE or not StageAPI or not StageAPI.Loaded or not FiendFolio or not FiendFolio.savedata or not FiendFolio.savedata.run then
+  if not (REPENTANCE or REPENTANCE_PLUS) or not StageAPI or not StageAPI.Loaded or not FiendFolio or not FiendFolio.savedata or not FiendFolio.savedata.run then
     return nil
   end
   
@@ -606,7 +606,7 @@ function mod:fillPillEffects()
     if pillEffect then
       if i < PillEffect.NUM_PILL_EFFECTS then
         -- it doesn't appear that you can remove pills from the XML (w/o crashing the game), but the names could be altered
-        mod.pillEffects[pillEffect.ID] = REPENTANCE and mod:lookupPillEffectName(pillEffect.Name) or pillEffect.Name
+        mod.pillEffects[pillEffect.ID] = (REPENTANCE or REPENTANCE_PLUS) and mod:lookupPillEffectName(pillEffect.Name) or pillEffect.Name
       else
         mod.pillEffects[pillEffect.ID] = '(M) ' .. pillEffect.Name
       end
@@ -679,9 +679,15 @@ function mod:doItemIntegration(effect)
     local tempEffect = nil
     
     local hasPHD = player:HasCollectible(CollectibleType.COLLECTIBLE_PHD, false)
-    local hasLuckyFoot = REPENTANCE and player:HasCollectible(CollectibleType.COLLECTIBLE_LUCKY_FOOT, false) or false
+    local hasLuckyFoot = false
+    if REPENTANCE or REPENTANCE_PLUS then
+      hasLuckyFoot = player:HasCollectible(CollectibleType.COLLECTIBLE_LUCKY_FOOT, false)
+    end
     local hasVirgo = player:HasCollectible(CollectibleType.COLLECTIBLE_VIRGO, false)
-    local hasFalsePHD = REPENTANCE and player:HasCollectible(CollectibleType.COLLECTIBLE_FALSE_PHD, false) or false
+    local hasFalsePHD = false
+    if REPENTANCE or REPENTANCE_PLUS then
+      hasFalsePHD = player:HasCollectible(CollectibleType.COLLECTIBLE_FALSE_PHD, false)
+    end
     
     if hasFalsePHD then
       if not (hasPHD or hasLuckyFoot or hasVirgo) then
@@ -695,13 +701,17 @@ function mod:doItemIntegration(effect)
       local playerType = player:GetPlayerType()
       local maxHearts = player:GetMaxHearts() / 2
       local hearts = (player:GetHearts() / 2) + (player:GetSoulHearts() / 2)
-      if REPENTANCE then
+      if REPENTANCE or REPENTANCE_PLUS then
         hearts = hearts + player:GetBoneHearts()
       end
       
-      local isSoulHeartPlayerType = REPENTANCE and (playerType == PlayerType.PLAYER_BLUEBABY   or playerType == PlayerType.PLAYER_THESOUL or
-                                                    playerType == PlayerType.PLAYER_BLUEBABY_B or playerType == PlayerType.PLAYER_THEFORGOTTEN_B)
-                                                or (playerType == PlayerType.PLAYER_XXX        or playerType == PlayerType.PLAYER_THESOUL)
+      local isSoulHeartPlayerType
+      if REPENTANCE or REPENTANCE_PLUS then
+        isSoulHeartPlayerType = playerType == PlayerType.PLAYER_BLUEBABY   or playerType == PlayerType.PLAYER_THESOUL or
+                                playerType == PlayerType.PLAYER_BLUEBABY_B or playerType == PlayerType.PLAYER_THEFORGOTTEN_B
+      else
+        isSoulHeartPlayerType = playerType == PlayerType.PLAYER_XXX        or playerType == PlayerType.PLAYER_THESOUL
+      end
       
       if isSoulHeartPlayerType then
         maxHearts = player:GetSoulHearts() / 2
@@ -729,7 +739,10 @@ function mod:getSinglePlayer()
   for i = 0, game:GetNumPlayers() - 1 do
     local player = game:GetPlayer(i)
     local isBaby = player:GetBabySkin() ~= BabySubType.BABY_UNASSIGNED
-    local isCoopGhost = REPENTANCE and player:IsCoopGhost() or false
+    local isCoopGhost = false
+    if REPENTANCE or REPENTANCE_PLUS then
+      isCoopGhost = player:IsCoopGhost()
+    end
     local isChild = player.Parent ~= nil
     if not isBaby and not isCoopGhost and not isChild then
       table.insert(players, player)
@@ -745,7 +758,7 @@ function mod:getSinglePlayer()
 end
 
 function mod:isTaintedForgotten(player)
-  if REPENTANCE and player:GetPlayerType() == PlayerType.PLAYER_THEFORGOTTEN_B then
+  if (REPENTANCE or REPENTANCE_PLUS) and player:GetPlayerType() == PlayerType.PLAYER_THEFORGOTTEN_B then
     local twin = player:GetOtherTwin()
     if twin and twin:GetPlayerType() == PlayerType.PLAYER_THESOUL_B then
       return true
@@ -785,7 +798,7 @@ function mod:isPillIdentified(pillColor)
     return true
   end
   
-  if REPENTANCE and FiendFolio then
+  if (REPENTANCE or REPENTANCE_PLUS) and FiendFolio then
     local ffPillColor = FiendFolio.savedata.run.PillBeingReplaced[tostring(pillColor)]
     if ffPillColor then
       return FiendFolio.savedata.run.IdentifiedRunPills[tostring(ffPillColor)] or false
@@ -864,7 +877,7 @@ function mod:setupModConfigMenu()
       Info = { 'Note: you can\'t de-identify pills', 'during the current run' }
     }
   )
-  if REPENTANCE then
+  if REPENTANCE or REPENTANCE_PLUS then
     ModConfigMenu.AddSetting(
       mod.Name,
       'General',
@@ -902,7 +915,7 @@ function mod:setupModConfigMenu()
         mod.state.enableItemIntegration = b
         mod:save(true)
       end,
-      Info = { 'Single player only / For overriden effects', 'Items: ' .. (REPENTANCE and 'phd, lucky foot, virgo, false phd' or 'phd, virgo'), '(+low health)' }
+      Info = { 'Single player only / For overriden effects', 'Items: ' .. ((REPENTANCE or REPENTANCE_PLUS) and 'phd, lucky foot, virgo, false phd' or 'phd, virgo'), '(+low health)' }
     }
   )
   ModConfigMenu.AddSpace(mod.Name, 'General')
@@ -1053,7 +1066,7 @@ function mod:setupModConfigMenu()
       OnChange = function(b)
         for _, v in pairs(mod.state.pillColors) do
           v.weightStd = 0
-          if REPENTANCE then
+          if REPENTANCE or REPENTANCE_PLUS then
             v.weightHorse = 0
           end
           mod:save(true)
@@ -1076,7 +1089,7 @@ function mod:setupModConfigMenu()
       OnChange = function(b)
         for _, v in pairs(mod.state.pillColors) do
           v.weightStd = mod.rng:RandomInt(11)
-          if REPENTANCE then
+          if REPENTANCE or REPENTANCE_PLUS then
             v.weightHorse = mod.rng:RandomInt(11)
           end
           mod:save(true)
@@ -1114,7 +1127,7 @@ function mod:setupModConfigMenu()
         end
       }
     )
-    if REPENTANCE then
+    if REPENTANCE or REPENTANCE_PLUS then
       ModConfigMenu.AddSetting(
         mod.Name,
         'Colors',
@@ -1359,7 +1372,7 @@ function mod:setupModConfigMenu()
         end
       }
     )
-    if REPENTANCE then
+    if REPENTANCE or REPENTANCE_PLUS then
       ModConfigMenu.AddSetting(
         mod.Name,
         'Spawn',
