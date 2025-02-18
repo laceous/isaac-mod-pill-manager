@@ -9,7 +9,6 @@ mod.forcedPillPoolTime = 0
 mod.rng = RNG()
 mod.rngShiftIndex = 35
 
-mod.renderPillColor = PillColor.PILL_NULL
 mod.spriteStdIdle = Sprite()
 mod.spriteStdHUD = Sprite()
 if REPENTANCE or REPENTANCE_PLUS then
@@ -482,18 +481,18 @@ function mod:getPillEffect(pillEffect, pillColor)
   return nil
 end
 
-function mod:onRenderMenu()
-  if mod.renderPillColor == PillColor.PILL_NULL or ScreenHelper == nil then
+function mod:renderPillColor(pillColor)
+  if ScreenHelper == nil then
     return
   end
   
   local pos = ScreenHelper.GetScreenCenter() + Vector(68, -18) -- copied from mcm
   
   if REPENTANCE or REPENTANCE_PLUS then
-    local anm2Std = mod.pillColors[mod.renderPillColor].anm2Std
-    local anm2Horse = mod.pillColors[mod.renderPillColor].anm2Horse
+    local anm2Std = mod.pillColors[pillColor].anm2Std
+    local anm2Horse = mod.pillColors[pillColor].anm2Horse
     
-    anm2Std, anm2Horse = mod:getFiendFolioAnm2(mod.renderPillColor, anm2Std, anm2Horse)
+    anm2Std, anm2Horse = mod:getFiendFolioAnm2(pillColor, anm2Std, anm2Horse)
     
     if mod.spriteStdIdle:GetFilename() ~= anm2Std then
       mod.spriteStdIdle:Load(anm2Std, true)
@@ -524,7 +523,7 @@ function mod:onRenderMenu()
       mod.spriteHorseHUD:Update()
     end
   else
-    local anm2Std = mod.pillColors[mod.renderPillColor].anm2Std
+    local anm2Std = mod.pillColors[pillColor].anm2Std
     
     if mod.spriteStdIdle:GetFilename() ~= anm2Std then
       mod.spriteStdIdle:Load(anm2Std, true)
@@ -532,9 +531,9 @@ function mod:onRenderMenu()
     end
     if mod.spriteStdHUD:GetFilename() ~= mod.anm2CardsPills then
       mod.spriteStdHUD:Load(mod.anm2CardsPills, true)
-      mod.spriteStdHUD:SetFrame('Pills', mod.renderPillColor - 1)
-    elseif mod.spriteStdHUD:GetFrame() ~= mod.renderPillColor - 1 then
-      mod.spriteStdHUD:SetFrame('Pills', mod.renderPillColor - 1)
+      mod.spriteStdHUD:SetFrame('Pills', pillColor - 1)
+    elseif mod.spriteStdHUD:GetFrame() ~= pillColor - 1 then
+      mod.spriteStdHUD:SetFrame('Pills', pillColor - 1)
     end
     
     mod.spriteStdIdle:Render(pos + Vector(-98, -28), Vector(0,0), Vector(0,0))
@@ -544,8 +543,6 @@ function mod:onRenderMenu()
       mod.spriteStdIdle:Update()
     end
   end
-  
-  mod.renderPillColor = PillColor.PILL_NULL
 end
 
 function mod:getFiendFolioAnm2(pillColor, anm2Std, anm2Horse)
@@ -1122,7 +1119,7 @@ function mod:setupModConfigMenu()
           mod:save(true)
         end,
         Info = function()
-          mod.renderPillColor = i
+          mod:renderPillColor(i)
           return { 'Choose relative weights for random pills' }
         end
       }
@@ -1144,7 +1141,7 @@ function mod:setupModConfigMenu()
             mod:save(true)
           end,
           Info = function()
-            mod.renderPillColor = i
+            mod:renderPillColor(i)
             return { 'Choose relative weights for random pills' }
           end
         }
@@ -1256,7 +1253,7 @@ function mod:setupModConfigMenu()
           end
         end,
         Info = function()
-          mod.renderPillColor = i
+          mod:renderPillColor(i)
           return { 'Select a pill effect override' }
         end
       }
@@ -1367,7 +1364,7 @@ function mod:setupModConfigMenu()
           mod:spawnPill(i, false)
         end,
         Info = function()
-          mod.renderPillColor = i
+          mod:renderPillColor(i)
           return { 'Spawn a standard pill' }
         end
       }
@@ -1388,7 +1385,7 @@ function mod:setupModConfigMenu()
             mod:spawnPill(i, true)
           end,
           Info = function()
-            mod.renderPillColor = i
+            mod:renderPillColor(i)
             return { 'Spawn a horse pill' }
           end
         }
@@ -1440,7 +1437,7 @@ function mod:setupModConfigMenu()
           -- nothing to do
         end,
         Info = function()
-          mod.renderPillColor = i
+          mod:renderPillColor(i)
           return { 'Pill as it appears in the pill pool', '(including any overrides)' }
         end
       }
@@ -1459,5 +1456,4 @@ mod:AddCallback(ModCallbacks.MC_GET_PILL_EFFECT, mod.getPillEffect)
 
 if ModConfigMenu then
   mod:setupModConfigMenu()
-  mod:AddCallback(ModCallbacks.MC_POST_RENDER, mod.onRenderMenu)
 end
