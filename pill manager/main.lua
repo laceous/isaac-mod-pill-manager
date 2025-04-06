@@ -362,7 +362,12 @@ function mod:onGameStart(isContinue)
   end
   
   if not isContinue then
-    mod:setStartupEffects()
+    local maggyPillEffect, isMaggyPillIdentified = mod:getMaggyPillEffect()
+    local maggyPillColor = mod:setStartupEffects(maggyPillEffect)
+    if maggyPillColor ~= PillColor.PILL_NULL then
+      -- rgon update: de-identify previous pill color
+      mod:setMaggyPillColor(maggyPillColor, isMaggyPillIdentified)
+    end
     
     if mod.state.identifyPills then
       mod:identifyPills()
@@ -765,7 +770,41 @@ function mod:isTaintedForgotten(player)
   return false
 end
 
-function mod:setStartupEffects()
+-- PILLEFFECT_FULL_HEALTH + identified on rep / PILLEFFECT_SPEED_UP + not identified on ab+
+function mod:getMaggyPillEffect()
+  local itemPool = game:GetItemPool()
+  
+  for i = 0, game:GetNumPlayers() - 1 do
+    local player = game:GetPlayer(i)
+    if player:GetPlayerType() == PlayerType.PLAYER_MAGDALENA then -- PLAYER_MAGDALENE is rep-only
+      local pillColor = player:GetPill(0)
+      if pillColor ~= PillColor.PILL_NULL then
+        return itemPool:GetPillEffect(pillColor, nil), itemPool:IsPillIdentified(pillColor)
+      end
+    end
+  end
+  
+  return PillEffect.PILLEFFECT_NULL, false
+end
+
+function mod:setMaggyPillColor(pillColor, identify)
+  local itemPool = game:GetItemPool()
+  
+  for i = 0, game:GetNumPlayers() - 1 do
+    local player = game:GetPlayer(i)
+    if player:GetPlayerType() == PlayerType.PLAYER_MAGDALENA then
+      player:SetPill(0, pillColor)
+      if identify then
+        itemPool:IdentifyPill(pillColor)
+      end
+    end
+  end
+end
+
+function mod:setStartupEffects(maggyPillEffect)
+  local maggyPillColor = PillColor.PILL_NULL
+  maggyPillEffect = maggyPillEffect or PillEffect.PILLEFFECT_NULL
+  
   local startupEffects = {}
   for _, v in ipairs(mod.state.startupEffects) do
     if v ~= PillEffect.PILLEFFECT_NULL and not mod:tableHasValue(startupEffects, v) then
@@ -780,6 +819,10 @@ function mod:setStartupEffects()
     for _, v in ipairs(startupEffects) do
       local color = itemPool:ForceAddPillEffect(v)
       
+      if maggyPillEffect ~= PillEffect.PILLEFFECT_NULL and v == maggyPillEffect then
+        maggyPillColor = color
+      end
+      
       if mod:tableHasValue(startupColors, color) then
         done = false
       else
@@ -787,6 +830,8 @@ function mod:setStartupEffects()
       end
     end
   until(done)
+  
+  return maggyPillColor
 end
 
 function mod:isPillIdentified(pillColor)

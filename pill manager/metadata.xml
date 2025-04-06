@@ -39,6 +39,8 @@ Note: This is using the same method as the individual option (General), but make
 
 Note: Each pill effect will only be applied once. Multiples will be ignored.
 
+Note: If you want Maggy to start with her default starting pill (full health or speed up) then make sure to add that effect to your startup list, otherwise it may be random.
+
 [b][u]Colors[/u][/b]
 
 You can set relative weights for how often each pill color will show up when spawning a random pill. Do you want all white-blue pills? Should all pills spawn as horse pills? Do you want gold pills to show up more often? Set all the weights back to 0 to fall back to the game's default behavior.
@@ -64,7 +66,7 @@ Spawn random/specific/horse pills directly from the menu.
 [b][u]Info[/u][/b]
 
 View the current pill pool (including any overrides).</description>
-    <version>1.20</version>
+    <version>1.21</version>
     <visibility>Public</visibility>
     <tag id="Lua"/>
     <tag id="Pills"/>
