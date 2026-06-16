@@ -560,11 +560,11 @@ function mod:getFiendFolioAnm2(pillColor, anm2Std, anm2Horse)
   if ffPillColor then
     local configStd = StageAPI.GetEntityConfig(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_PILL, ffPillColor)
     if configStd and configStd.Anm2 then
-      anm2Std = 'gfx/' .. configStd.Anm2
+      anm2Std = string.lower('gfx/' .. configStd.Anm2)
     end
     local configHorse = StageAPI.GetEntityConfig(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_PILL, ffPillColor + PillColor.PILL_GIANT_FLAG)
     if configHorse and configHorse.Anm2 then
-      anm2Horse = 'gfx/' .. configHorse.Anm2
+      anm2Horse = string.lower('gfx/' .. configHorse.Anm2)
     end
   end
   
