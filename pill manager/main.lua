@@ -551,7 +551,7 @@ function mod:renderPillColor(pillColor)
 end
 
 function mod:getFiendFolioAnm2(pillColor, anm2Std, anm2Horse)
-  if not (REPENTANCE or REPENTANCE_PLUS) or not StageAPI or not StageAPI.Loaded or not FiendFolio then
+  if not ((REPENTANCE or REPENTANCE_PLUS) and StageAPI and StageAPI.Loaded and FiendFolio and FiendFolio.savedata and FiendFolio.savedata.run) then
     return anm2Std, anm2Horse
   end
   
@@ -560,11 +560,11 @@ function mod:getFiendFolioAnm2(pillColor, anm2Std, anm2Horse)
   if ffPillColor then
     local configStd = StageAPI.GetEntityConfig(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_PILL, ffPillColor)
     if configStd and configStd.Anm2 then
-      anm2Std = string.lower('gfx/' .. configStd.Anm2)
+      anm2Std = 'gfx/' .. string.lower(configStd.Anm2)
     end
     local configHorse = StageAPI.GetEntityConfig(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_PILL, ffPillColor + PillColor.PILL_GIANT_FLAG)
     if configHorse and configHorse.Anm2 then
-      anm2Horse = string.lower('gfx/' .. configHorse.Anm2)
+      anm2Horse = 'gfx/' .. string.lower(configHorse.Anm2)
     end
   end
   
@@ -572,7 +572,7 @@ function mod:getFiendFolioAnm2(pillColor, anm2Std, anm2Horse)
 end
 
 function mod:getFiendFolioName(pillColor)
-  if not (REPENTANCE or REPENTANCE_PLUS) or not StageAPI or not StageAPI.Loaded or not FiendFolio or not FiendFolio.savedata or not FiendFolio.savedata.run then
+  if not ((REPENTANCE or REPENTANCE_PLUS) and StageAPI and StageAPI.Loaded and FiendFolio and FiendFolio.savedata and FiendFolio.savedata.run) then
     return nil
   end
   
@@ -840,7 +840,7 @@ function mod:isPillIdentified(pillColor)
     return true
   end
   
-  if (REPENTANCE or REPENTANCE_PLUS) and FiendFolio then
+  if (REPENTANCE or REPENTANCE_PLUS) and StageAPI and StageAPI.Loaded and FiendFolio and FiendFolio.savedata and FiendFolio.savedata.run then
     local ffPillColor = FiendFolio.savedata.run.PillBeingReplaced[tostring(pillColor)]
     if ffPillColor then
       return FiendFolio.savedata.run.IdentifiedRunPills[tostring(ffPillColor)] or false
