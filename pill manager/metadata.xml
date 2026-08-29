@@ -27,7 +27,7 @@ There's options to:
     [*]Force individual pill effects into the pill pool
 [/list]
 
-Note: The game has per-player pill interactions with certain items (PHD, Lucky Foot, Virgo, False PHD, and low health). The API doesn't fully support per-player integration for overriden pill effects (Effects 1 and 2). As a workaround, this integration has been made available (via a toggle) for single player only.
+Note: The game has per-player pill interactions with certain items (PHD, Lucky Foot, Virgo, False PHD, and low health). The API doesn't fully support per-player integration for overriden pill effects (Effects 1 and 2). As a workaround, this integration has been made available (via a toggle) for single player only. (Update: This is no longer a limitation if you have RGON+)
 
 Note: Pill effects will be randomly assigned to pill colors. Due to the random behavior, forcing more than one pill effect may overwrite any previous assignments. Pill effects added in this manner will have normal interactions with items like PHD.
 
@@ -66,7 +66,7 @@ Spawn random/specific/horse pills directly from the menu.
 [b][u]Info[/u][/b]
 
 View the current pill pool (including any overrides).</description>
-    <version>1.26</version>
+    <version>1.27</version>
     <visibility>Public</visibility>
     <tag id="Lua"/>
     <tag id="Pills"/>
