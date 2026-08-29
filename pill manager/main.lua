@@ -464,11 +464,11 @@ function mod:getPillColor(seed)
 end
 
 -- pillColor never includes PILL_GIANT_FLAG so you can't tell if it's a horse pill
-function mod:getPillEffect(pillEffect, pillColor)
+function mod:getPillEffect(pillEffect, pillColor, player)
   local colorOverride = mod:getPillColorOverride(pillColor)
   if colorOverride ~= PillEffect.PILLEFFECT_NULL then
     if mod.state.enableItemIntegration then
-      colorOverride = mod:doItemIntegration(colorOverride)
+      colorOverride = mod:doItemIntegration(colorOverride, player)
     end
     
     return colorOverride
@@ -477,7 +477,7 @@ function mod:getPillEffect(pillEffect, pillColor)
   local effectOverride = mod:getPillEffectOverride(pillEffect)
   if effectOverride ~= PillEffect.PILLEFFECT_NULL then
     if mod.state.enableItemIntegration then
-      effectOverride = mod:doItemIntegration(effectOverride)
+      effectOverride = mod:doItemIntegration(effectOverride, player)
     end
     
     return effectOverride
@@ -697,9 +697,9 @@ function mod:getPillEffectOverride(effect)
   return PillEffect.PILLEFFECT_NULL
 end
 
-function mod:doItemIntegration(effect)
+function mod:doItemIntegration(effect, player)
   -- this excludes multiplayer (including jacob & esau)
-  local player = mod:getSinglePlayer()
+  player = player or mod:getSinglePlayer()
   
   if player then
     local tempEffect = nil
@@ -981,7 +981,7 @@ function mod:setupModConfigMenu()
         mod.state.enableItemIntegration = b
         mod:save(true)
       end,
-      Info = { 'Single player only / For overriden effects', 'Items: ' .. ((REPENTANCE or REPENTANCE_PLUS) and 'phd, lucky foot, virgo, false phd' or 'phd, virgo'), '(+low health)' }
+      Info = { 'For overriden effects / rgon req for multiplayer', 'Items: ' .. ((REPENTANCE or REPENTANCE_PLUS) and 'phd, lucky foot, virgo, false phd' or 'phd, virgo'), '(+low health)' }
     }
   )
   ModConfigMenu.AddSpace(mod.Name, 'General')

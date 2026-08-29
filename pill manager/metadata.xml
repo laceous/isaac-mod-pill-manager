@@ -10,7 +10,7 @@ AB+ and Repentance are both supported.
 There's two ways to set pill effects:
 [list]
     [*]Force pill effects into the pill pool (General and Startup). Effects will be applied randomly. Items like PHD will have full support in single and multi-player.
-    [*]Override pill effects (Effects 1 and 2). Effects can be applied more specifically. Items like PHD can be emulated in single player only.
+    [*]Override pill effects (Effects 1 and 2). Effects can be applied more specifically. Items like PHD can be emulated in single player only. (Update: REPENTOGON+ supports this for multiplayer!)
 [/list]
 
 Single player checks will exclude co-op babies and co-op ghosts. Due to how the game works, Jacob &amp; Esau are considered multiplayer.
@@ -66,7 +66,7 @@ Spawn random/specific/horse pills directly from the menu.
 [b][u]Info[/u][/b]
 
 View the current pill pool (including any overrides).</description>
-    <version>1.24</version>
+    <version>1.25</version>
     <visibility>Public</visibility>
     <tag id="Lua"/>
     <tag id="Pills"/>
