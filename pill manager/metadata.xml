@@ -15,7 +15,7 @@ There's two ways to set pill effects:
 
 Single player checks will exclude co-op babies and co-op ghosts. Due to how the game works, Jacob &amp; Esau are considered multiplayer.
 
-Modded pill effects are supported. &quot;Fiend Folio: Reheated&quot; pill colors are also supported.
+Modded pill effects are supported. &quot;Fiend Folio: Reheated / Reloaded&quot; pill colors are also supported.
 
 [b][u]General[/u][/b]
 
@@ -66,7 +66,7 @@ Spawn random/specific/horse pills directly from the menu.
 [b][u]Info[/u][/b]
 
 View the current pill pool (including any overrides).</description>
-    <version>1.23</version>
+    <version>1.24</version>
     <visibility>Public</visibility>
     <tag id="Lua"/>
     <tag id="Pills"/>

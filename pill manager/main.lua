@@ -441,7 +441,7 @@ function mod:getPillColor(seed)
       totalWeight = totalWeight + v.weightStd
     end
     if (REPENTANCE or REPENTANCE_PLUS) and v.weightHorse > 0 then
-      table.insert(weightedColors, { color = PillColor.PILL_GIANT_FLAG + tonumber(k), weight = v.weightHorse })
+      table.insert(weightedColors, { color = PillColor.PILL_GIANT_FLAG | tonumber(k), weight = v.weightHorse })
       totalWeight = totalWeight + v.weightHorse
     end
   end
@@ -558,13 +558,24 @@ function mod:getFiendFolioAnm2(pillColor, anm2Std, anm2Horse)
   local ffPillColor = FiendFolio.savedata.run.PillBeingReplaced[tostring(pillColor)]
   
   if ffPillColor then
-    local configStd = StageAPI.GetEntityConfig(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_PILL, ffPillColor)
-    if configStd and configStd.Anm2 then
-      anm2Std = 'gfx/' .. string.lower(configStd.Anm2)
-    end
-    local configHorse = StageAPI.GetEntityConfig(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_PILL, ffPillColor + PillColor.PILL_GIANT_FLAG)
-    if configHorse and configHorse.Anm2 then
-      anm2Horse = 'gfx/' .. string.lower(configHorse.Anm2)
+    if REPENTOGON then
+      local configStd = EntityConfig.GetEntity(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_PILL, ffPillColor)
+      if configStd then
+        anm2Std = string.lower(configStd:GetAnm2Path())
+      end
+      local configHorse = EntityConfig.GetEntity(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_PILL, ffPillColor | PillColor.PILL_GIANT_FLAG)
+      if configHorse then
+        anm2Horse = string.lower(configHorse:GetAnm2Path())
+      end
+    else
+      local configStd = StageAPI.GetEntityConfig(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_PILL, ffPillColor)
+      if configStd and configStd.Anm2 then
+        anm2Std = 'gfx/' .. string.lower(configStd.Anm2)
+      end
+      local configHorse = StageAPI.GetEntityConfig(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_PILL, ffPillColor | PillColor.PILL_GIANT_FLAG)
+      if configHorse and configHorse.Anm2 then
+        anm2Horse = 'gfx/' .. string.lower(configHorse.Anm2)
+      end
     end
   end
   
@@ -579,12 +590,25 @@ function mod:getFiendFolioName(pillColor)
   local ffPillColor = FiendFolio.savedata.run.PillBeingReplaced[tostring(pillColor)]
   
   if ffPillColor then
-    local config = StageAPI.GetEntityConfig(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_PILL, ffPillColor)
-    if config and config.Name then
-      local name = config.Name -- Pill Black-Purple
+    local name
+    if REPENTOGON then
+      local config = EntityConfig.GetEntity(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_PILL, ffPillColor)
+      if config then
+        name = config:GetName()
+      end
+    else
+      local config = StageAPI.GetEntityConfig(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_PILL, ffPillColor)
+      if config and config.Name then
+        name = config.Name -- Pill Black-Purple / Horse Pill Black-Purple
+      end
+    end
+    if name then
       if string.len(name) >= 6 and string.sub(name, 1, 5) == 'Pill ' then
         return string.sub(name, 6) -- Black-Purple
+      elseif string.len(name) >= 12 and string.sub(name, 1, 11) == 'Horse Pill ' then
+        return string.sub(name, 12) -- Black-Purple
       end
+      return name
     end
   end
   
@@ -866,7 +890,7 @@ end
 
 function mod:spawnPill(color, isHorse)
   local player = game:GetPlayer(0)
-  local pill = (color ~= PillColor.PILL_NULL and isHorse) and PillColor.PILL_GIANT_FLAG + color or color
+  local pill = (color ~= PillColor.PILL_NULL and isHorse) and PillColor.PILL_GIANT_FLAG | color or color
   Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_PILL, pill, Isaac.GetFreeNearPosition(player.Position, 3), Vector(0,0), nil)
 end
 
