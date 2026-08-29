@@ -362,11 +362,13 @@ function mod:onGameStart(isContinue)
   end
   
   if not isContinue then
-    local maggyPillEffect, isMaggyPillIdentified = mod:getMaggyPillEffect()
+    local maggyPillEffect, prevMaggyPillColor, isMaggyPillIdentified = mod:getMaggyPillEffect()
     local maggyPillColor = mod:setStartupEffects(maggyPillEffect)
     if maggyPillColor ~= PillColor.PILL_NULL then
-      -- rgon update: de-identify previous pill color
       mod:setMaggyPillColor(maggyPillColor, isMaggyPillIdentified)
+      if isMaggyPillIdentified and prevMaggyPillColor ~= maggyPillColor then
+        mod:unidentifyPill(prevMaggyPillColor)
+      end
     end
     
     if mod.state.identifyPills then
@@ -805,12 +807,15 @@ function mod:getMaggyPillEffect()
     if player:GetPlayerType() == PlayerType.PLAYER_MAGDALENA then -- PLAYER_MAGDALENE is rep-only
       local pillColor = player:GetPill(0)
       if pillColor ~= PillColor.PILL_NULL then
-        return itemPool:GetPillEffect(pillColor, nil), itemPool:IsPillIdentified(pillColor)
+        if (REPENTANCE or REPENTANCE_PLUS) and StageAPI and StageAPI.Loaded and FiendFolio and FiendFolio.savedata and FiendFolio.savedata.run then
+          pillColor = FiendFolio.savedata.run.PillCopies[tostring(pillColor)] or pillColor
+        end
+        return itemPool:GetPillEffect(pillColor, nil), pillColor, itemPool:IsPillIdentified(pillColor)
       end
     end
   end
   
-  return PillEffect.PILLEFFECT_NULL, false
+  return PillEffect.PILLEFFECT_NULL, PillColor.PILL_NULL, false
 end
 
 function mod:setMaggyPillColor(pillColor, identify)
@@ -824,6 +829,13 @@ function mod:setMaggyPillColor(pillColor, identify)
         itemPool:IdentifyPill(pillColor)
       end
     end
+  end
+end
+
+function mod:unidentifyPill(pillColor)
+  if REPENTOGON then
+    local itemPool = game:GetItemPool()
+    itemPool:UnidentifyPill(pillColor)
   end
 end
 
