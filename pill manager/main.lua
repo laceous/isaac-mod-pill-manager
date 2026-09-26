@@ -426,7 +426,7 @@ end
 -- vanilla doesn't pass pill color, assume gold pill
 function mod:onUsePill(pillEffect, player, useFlags, pillColor)
   if (REPENTANCE or REPENTANCE_PLUS) and mod.state.identifyGoldPills and
-     (pillColor == nil or pillColor == PillColor.PILL_GOLD)
+     (pillColor == nil or pillColor % PillColor.PILL_GIANT_FLAG == PillColor.PILL_GOLD)
   then
     mod:identifyGoldPillsAgain()
   end
